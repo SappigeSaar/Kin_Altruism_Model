@@ -5,6 +5,9 @@ using System.Runtime.InteropServices;
 
 public class Main
 {
+    List<Creature> population = new List<Creature>();
+    List<Creature> males = new List<Creature>();
+    List<Creature> females = new List<Creature>();
     public Main()
     {
         Console.WriteLine("Hello, World!");
@@ -13,6 +16,55 @@ public class Main
 
         string me = "EmmaReal?";
         Console.WriteLine(me);
+
+        Initialise();
+
+        RunLoop();
+
+        PrintResults();
+
+        Console.WriteLine(":3");
+    }
+
+    /// <summary>
+    /// sets up everything the program needs
+    /// </summary>
+    public void Initialise()
+    {
+        //set up all the creatures
+        
+        //read the initiattion parameters from a file
+    }
+
+    /// <summary>
+    /// runs the program itself
+    /// </summary>
+    public void RunLoop()
+    {
+        int phaseCount = 1000;
+
+        while (phaseCount > 0)
+        {
+            //run the creature phase
+            phaseCount--;
+        }
+
+        //make new creatures
+        foreach (Creature female in females)
+        {
+            //if female == fertile
+                //foreach (Creature male in males)
+                    //if fertile Creature baby = 
+                    // population.Add creature
+                    //appropriate sex.add creature
+        }
+    }
+
+    /// <summary>
+    /// put the results og the run into a file
+    /// </summary>
+    public void PrintResults()
+    {
 
     }
 }
