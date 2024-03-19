@@ -1,1 +1,2 @@
-# Kin_Alturism_Model
+# Kin Alturism Model
+- Emma and Storm

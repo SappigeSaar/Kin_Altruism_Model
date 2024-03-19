@@ -3,4 +3,5 @@ Console.WriteLine("Hello, World!");
 
 Console.WriteLine("Storm here");
 
-Console.WriteLine("Emma was here also");
+string me = "EmmaReal?";
+Console.WriteLine(me);
