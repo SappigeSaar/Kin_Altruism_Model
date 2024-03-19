@@ -2,7 +2,8 @@
 
 using System.Net.Security;
 using System.Runtime.InteropServices;
-
+using System;
+using System.Reflection.Metadata.Ecma335;
 
 Main main = new Main();
 public class Main
@@ -10,6 +11,9 @@ public class Main
     List<Creature> population = new List<Creature>();
     List<Creature> males = new List<Creature>();
     List<Creature> females = new List<Creature>();
+
+    Random random = new Random();
+
     public Main()
     {
         Console.WriteLine("Hello, World!");
@@ -47,19 +51,53 @@ public class Main
 
         while (phaseCount > 0)
         {
-            //run the creature phase
+            //assign food
+            AssignFood();
+
+            //run the creature iteration
+           foreach (Creature creature in population)
+            {
+                //creature phase\
+                creature.RunIteration();//foodupdate
+
+                //kills the creatures 
+                if (creature.Dies())
+                {
+                    population.Remove(creature);
+                }
+            }
+
+            //make new creatures
+            foreach (Creature female in females)
+            {
+                if (female.fertile)
+                    foreach (Creature male in males)
+                        if (male.fertile)
+                        {
+                            Creature creature = new Creature(female, male);
+                            
+                            //add the creature to all the right lists
+                            population.Add(creature);
+                            if (creature.sex == physicalsex.female)
+                                females.Add(creature);
+                            else
+                                males.Add(creature);
+
+                            //creatures cant make multiple babies in the same iteration
+                            female.fertile = false;
+                            male.fertile = false;
+                        }
+            }
+
+            foreach (Creature creature in population)
+            {
+                creature.RelationsUpdate();
+            }
+
             phaseCount--;
         }
 
-        //make new creatures
-        foreach (Creature female in females)
-        {
-            //if female == fertile
-                //foreach (Creature male in males)
-                    //if fertile Creature baby = 
-                    // population.Add creature
-                    //appropriate sex.add creature
-        }
+        
     }
 
     /// <summary>
@@ -68,6 +106,26 @@ public class Main
     public void PrintResults()
     {
 
+    }
+
+    public void AssignFood()
+    {
+        List<int> indexes = new List<int>();
+        //create list of random integers(representing the indexes
+        for (int i = 0; i < Parameters.numOfBundles; i++)
+        {
+            int randomnumber = random.Next(population.Count());
+            while (indexes.Contains(randomnumber))
+            {
+                randomnumber = random.Next(population.Count());
+            }
+
+            indexes.Add(randomnumber);
+
+            Creature creature = population[randomnumber];
+            creature.gotFood = true;
+        }
+        //foreach index getfood to true
     }
 }
 
@@ -91,7 +149,7 @@ public class Creature
     }
 
     //phenotype
-    physicalsex sex;
+    public physicalsex sex;
     private bool domfucky;
     private int ?phenoalt;
     Random rand = new Random();
@@ -130,6 +188,24 @@ public class Creature
         {
             if(child.Dies()) children.Remove(child);
         }
+    }
+
+    /// <summary>
+    /// is just a phase
+    /// </summary>
+    public void RunIteration()
+    {
+        food = food - Parameters.hunger;
+
+        if (gotFood)
+            HandOut();
+
+        //see if the creature can be fertile this phase
+        if (food > Parameters.mateBound)
+        {
+            fertile = true;
+        }
+        else fertile = false;
     }
 
 
