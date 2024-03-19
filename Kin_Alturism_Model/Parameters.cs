@@ -12,7 +12,7 @@ namespace Kin_Alturism_Model
         public const int foodPerBundle = 3;
 
         public const int maxfood = 100;
-        public const int hungrybound = 10
+        public const int hungrybound = 10;
         public const int hunger = 1;
     }
 }
