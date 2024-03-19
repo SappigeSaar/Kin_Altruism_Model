@@ -134,13 +134,16 @@ public class Main
 
 public class Creature
 {
+    //parents and list of childern
     Creature ?parent1;
     Creature ?parent2;
     List<Creature> children;
 
+    //amount of food it has and if it got food this loop
     private int food;
     public bool gotfood;
 
+    //method to update food value without going over bounds
     int foodupdate
     {
         get { return food; }
@@ -154,17 +157,18 @@ public class Creature
 
     //phenotype
     public physicalsex sex;
-    private bool domfucky;
-    private int ?phenoalt;
+    private bool doubledominance;
+    private int ?phenoaltruism;
     Random rand = new Random();
     public bool fertile;
+    public bool disability;
     int altruism
     {
         get
         {
             gene[] genes = new gene[] { gene1, gene2 };
-            if (domfucky) return genes[rand.Next(1, 3)].altruism;
-            else return (int)phenoalt;
+            if (doubledominance) return (int)genes[rand.Next(1, 3)].altruism;
+            else return (int)phenoaltruism;
         }
     }
 
@@ -172,6 +176,7 @@ public class Creature
     gene gene1;
     gene gene2;
 
+    //returns whether the creature starves
     public bool Dies()
     {
         if (food > 0)
@@ -184,6 +189,7 @@ public class Creature
         }
     }
 
+    //removes dead direct relatives
     public void RelationsUpdate()
     {
         if (parent1 != null) if (parent1.Dies()) parent1 = null;
@@ -212,19 +218,23 @@ public class Creature
         else fertile = false;
     }
 
-    
+    //deals with obtained food
     public void Handout()
     {
+        //looks at family distance 1
         List<Creature> currentdist = new List<Creature> { parent1, parent2 };
         foreach(Creature child in children) currentdist.Add(child);
         bool found = false;
 
+        //loops 
         for(int dist = 1; dist <= altruism; dist++)
         {
+            //only hands out once
             if (found) break;
             HashSet<Creature> nexthash = new HashSet<Creature>();
             foreach (Creature fam in currentdist)
             {
+                //if fam considered hungry, food handed out
                 int x = fam.food;
                 if (x < Parameters.hungrybound)
                 {
@@ -234,12 +244,16 @@ public class Creature
                 }
                 nexthash.UnionWith(fam.related);
             }
+            //sets list of relatives' relatives to current parsing list
             currentdist = nexthash.ToList();
 
         }
+        //if no hungry fam found, eat food itself
         if(!found) foodupdate = food + Parameters.foodPerBundle;
+        gotfood = false;
     }
 
+    //returns hashset of related creatures
     public HashSet<Creature> related
     {
         get
@@ -251,14 +265,25 @@ public class Creature
             return found;
         }
     }
+
+    //creates a new creature based on two parents
     public Creature(Creature mommy, Creature daddy)
     {
+        //random number to see if mutated, mutation + (1) or - (2), mom (1) or dad (2) gene mutation, disabled, mommygene, daddygene,
+        bool mutated = rand.Next(1, 101) < Parameters.mutationChance;
+        bool disabled = rand.Next(1, 101) < Parameters.disabilityChance;
+        int mutationDirection = rand.Next(1, 3);
+        int momOrDad = rand.Next(1, 3);
+
+        this.disability = disabled;
         this.food = 100;
+
+        //sets parents
         this.parent1 = mommy;
         this.parent2 = daddy;
-        Random rand = new Random();
         int mommygene = rand.Next(1, 3);
         int daddygene = rand.Next(1, 3);
+        //copy genes
         if (mommygene == 1)
         {
             this.gene1 = mommy.gene1;
@@ -270,32 +295,60 @@ public class Creature
         if (daddygene == 1)
         {
             this.gene2 = daddy.gene1;
-            this.sex = physicalsex.female;
         }
         else
         {
             this.gene2 = daddy.gene2;
-            this.sex = physicalsex.male;
         }
+
+        //mutate
+
+        //decide sex and altruism phenotype
+        if(gene1.type == sexgene.Y)
+        {
+            this.sex = physicalsex.male;
+            this.doubledominance = false;
+            this.phenoaltruism = gene2.altruism;
+        }
+        else if(gene2.type == sexgene.Y)
+        {
+            this.sex = physicalsex.male;
+            this.doubledominance = false;
+            this.phenoaltruism = gene1.altruism;
+        }
+        else
+        {
+            if (gene1.dom == gene2.dom)
+            {
+                this.doubledominance = true;
+            }
+            else
+            {
+                this.doubledominance = false;
+                if (gene1.dom == dominance.dominant)
+                {
+                    this.phenoaltruism = gene1.altruism;
+                }
+                else this.phenoaltruism = gene2.altruism;
+            }
+
+            this.sex = physicalsex.female;
+        }
+        
+
+
+
         this.children = new List<Creature>();
         this.fertile = false;
-        if (gene1.dom == gene2.dom)
-        {
-            this.domfucky = true;
-        }
-        else this.domfucky = false;
-        if (gene1.dom == dominance.dominant)
-        {
-            this.phenoalt = gene1.altruism;
-        }
-        else this.phenoalt = gene2.altruism;
-
         this.gotfood = false;
     }
+
+    //creates a creature based on simple parameters
     public Creature(physicalsex sex, int gen1, dominance dom1, int gen2, dominance dom2)
     {
         this.food = 100;
         this.sex = sex;
+        this.disability = false;
         sexgene sexgene2;
         if (sex == physicalsex.male)
         {
@@ -313,16 +366,19 @@ public class Creature
     }
 
 }
-public struct gene
+public class gene
 {
-    public int altruism;
-    public dominance dom;
+    public int ?altruism;
+    public dominance ?dom;
     public sexgene type;
 
     public gene(int alt, dominance dommy, sexgene sex)
     {
-        this.altruism = alt;
-        this.dom = dommy;
+        if(sex == sexgene.X)
+        {
+            this.altruism = alt;
+            this.dom = dommy;
+        }
         this.type = sex;
     }
 }
