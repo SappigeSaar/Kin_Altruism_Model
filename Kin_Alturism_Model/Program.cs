@@ -1,6 +1,9 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using Kin_Alturism_Model;
+using System.Linq;
 using System.Net.Security;
+using System.Net.Sockets;
 using System.Runtime.InteropServices;
 
 
@@ -35,7 +38,7 @@ public class Main
     {
         //set up all the creatures
         
-        //read the initiattion parameters from a file
+        //read the initiattion Parameters from a file
     }
 
     /// <summary>
@@ -48,6 +51,16 @@ public class Main
         while (phaseCount > 0)
         {
             //run the creature phase
+
+            //count population
+            //make array of false
+            //set x amount to true
+            
+
+            //decrease food
+            //get food
+            
+
             phaseCount--;
         }
 
@@ -78,14 +91,15 @@ public class Creature
     List<Creature> children;
 
     private int food;
+    public bool gotfood;
 
     int foodupdate
     {
         get { return food; }
 
-        set { if(value > 100)
+        set { if(value > Parameters.maxfood)
             {
-                food = 100;
+                food = Parameters.maxfood;
             } else { food = value; }
         }
     }
@@ -132,9 +146,45 @@ public class Creature
         }
     }
 
+    
+    public void Handout()
+    {
+        List<Creature> currentdist = new List<Creature> { parent1, parent2 };
+        foreach(Creature child in children) currentdist.Add(child);
+        bool found = false;
 
+        for(int dist = 1; dist <= altruism; dist++)
+        {
+            if (found) break;
+            HashSet<Creature> nexthash = new HashSet<Creature>();
+            foreach (Creature fam in currentdist)
+            {
+                int x = fam.food;
+                if (x < Parameters.hungrybound)
+                {
+                    fam.foodupdate = x + Parameters.foodPerBundle;
+                    found = true; 
+                    break;
+                }
+                nexthash.UnionWith(fam.related);
+            }
+            currentdist = nexthash.ToList();
 
+        }
+        if(!found) foodupdate = food + Parameters.foodPerBundle;
+    }
 
+    public HashSet<Creature> related
+    {
+        get
+        {
+            HashSet<Creature> found = new HashSet<Creature>();
+            if (parent1 != null) found.Add(parent1);
+            if (parent2 != null) found.Add(parent2);
+            foreach(Creature child in children) found.Add(child);
+            return found;
+        }
+    }
     public Creature(Creature mommy, Creature daddy)
     {
         this.food = 100;
@@ -163,7 +213,18 @@ public class Creature
         }
         this.children = new List<Creature>();
         this.fertile = false;
+        if (gene1.dom == gene2.dom)
+        {
+            this.domfucky = true;
+        }
+        else this.domfucky = false;
+        if (gene1.dom == dominance.dominant)
+        {
+            this.phenoalt = gene1.altruism;
+        }
+        else this.phenoalt = gene2.altruism;
 
+        this.gotfood = false;
     }
     public Creature(physicalsex sex, int gen1, dominance dom1, int gen2, dominance dom2)
     {
@@ -182,21 +243,10 @@ public class Creature
         this.gene2 = new gene(gen2, dom2, sexgene2);
         this.children = new List<Creature>();
         this.fertile = false;
+        this.gotfood = false;
     }
 
 }
-public enum dominance
-{
-    dominant,
-    recessive
-}
-
-public enum sexgene
-{
-    X,
-    Y
-}
-
 public struct gene
 {
     public int altruism;
@@ -210,6 +260,18 @@ public struct gene
         this.type = sex;
     }
 }
+public enum dominance
+{
+    dominant,
+    recessive
+}
+
+public enum sexgene
+{
+    X,
+    Y
+}
+
 public enum physicalsex
 {
     female,
