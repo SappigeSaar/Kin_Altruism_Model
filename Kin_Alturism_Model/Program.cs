@@ -3,6 +3,8 @@
 using System.Net.Security;
 using System.Runtime.InteropServices;
 
+
+Main main = new Main();
 public class Main
 {
     public Main()
@@ -19,12 +21,11 @@ public class Main
 
 public class Creature
 {
-    Creature parent1;
-    Creature parent2;
+    Creature ?parent1;
+    Creature ?parent2;
     List<Creature> children;
 
     private int food;
-    public physicalsex sex;
 
     int foodupdate
     {
@@ -35,32 +36,52 @@ public class Creature
                 food = 100;
             } else { food = value; }
         }
-    }   
-    int gene1;
-    dominance gene1dom;
-    sexgene sexgene1;
-    int gene2;
-    dominance gene2dom;
-    sexgene sexgene2;
+    }
 
-    public Creature(physicalsex sex, int gen1, dominance dom1, int gen2, dominance dom2)
+    //phenotype
+    physicalsex sex;
+    private bool domfucky;
+    private int ?phenoalt;
+    Random rand = new Random();
+    public bool fertile;
+    int altruism
     {
-        this.food = 100;
-        this.gene1 = gen1;
-        this.gene1dom = dom1;
-        this.gene2 = gen2;
-        this.gene2dom = dom2;
-        if(sex == physicalsex.male)
+        get
         {
-            this.sexgene1 = sexgene.X;
-            this.sexgene2 = sexgene.Y;
+            gene[] genes = new gene[] { gene1, gene2 };
+            if (domfucky) return genes[rand.Next(1, 3)].altruism;
+            else return (int)phenoalt;
+        }
+    }
+
+    //genotype
+    gene gene1;
+    gene gene2;
+
+    public bool Dies()
+    {
+        if (food > 0)
+        {
+            return false;
         }
         else
         {
-            this.sexgene1 = sexgene.X;
-            this.sexgene2 = sexgene.X;
+            return true;
         }
     }
+
+    public void RelationsUpdate()
+    {
+        if (parent1 != null) if (parent1.Dies()) parent1 = null;
+        if (parent2 != null) if (parent2.Dies()) parent2 = null;
+        foreach(Creature child in children)
+        {
+            if(child.Dies()) children.Remove(child);
+        }
+    }
+
+
+
 
     public Creature(Creature mommy, Creature daddy)
     {
@@ -73,31 +94,43 @@ public class Creature
         if (mommygene == 1)
         {
             this.gene1 = mommy.gene1;
-            this.gene1dom = mommy.gene1dom;
-            this.sexgene1 = mommy.sexgene1;
         }
         else
         {
             this.gene1 = mommy.gene2;
-            this.gene1dom = mommy.gene2dom;
-            this.sexgene1 = mommy.sexgene2;
         }
         if (daddygene == 1)
         {
-            this.gene1 = daddy.gene1;
-            this.gene1dom = daddy.gene1dom;
-            this.sexgene1 = daddy.sexgene1;
+            this.gene2 = daddy.gene1;
+            this.sex = physicalsex.female;
         }
         else
         {
-            this.gene1 = daddy.gene2;
-            this.gene1dom = daddy.gene2dom;
-            this.sexgene1 = daddy.sexgene2;
+            this.gene2 = daddy.gene2;
+            this.sex = physicalsex.male;
         }
+        this.children = new List<Creature>();
+        this.fertile = false;
 
     }
-
-
+    public Creature(physicalsex sex, int gen1, dominance dom1, int gen2, dominance dom2)
+    {
+        this.food = 100;
+        this.sex = sex;
+        sexgene sexgene2;
+        if (sex == physicalsex.male)
+        {
+            sexgene2 = sexgene.Y;
+        }
+        else
+        {
+            sexgene2 = sexgene.X;
+        }
+        this.gene1 = new gene(gen1, dom1, sexgene.X);
+        this.gene2 = new gene(gen2, dom2, sexgene2);
+        this.children = new List<Creature>();
+        this.fertile = false;
+    }
 
 }
 public enum dominance
@@ -112,6 +145,19 @@ public enum sexgene
     Y
 }
 
+public struct gene
+{
+    public int altruism;
+    public dominance dom;
+    public sexgene type;
+
+    public gene(int alt, dominance dommy, sexgene sex)
+    {
+        this.altruism = alt;
+        this.dom = dommy;
+        this.type = sex;
+    }
+}
 public enum physicalsex
 {
     female,
