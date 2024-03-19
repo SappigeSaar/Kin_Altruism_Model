@@ -126,7 +126,7 @@ public class Main
             indexes.Add(randomnumber);
 
             Creature creature = population[randomnumber];
-            creature.gotFood = true;
+            creature.gotfood = true;
         }
         //foreach index getfood to true
     }
@@ -201,8 +201,8 @@ public class Creature
     {
         food = food - Parameters.hunger;
 
-        if (gotFood)
-            HandOut();
+        if (gotfood)
+            Handout();
 
         //see if the creature can be fertile this phase
         if (food > Parameters.mateBound)
