@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "bd+qt0VKLR+qtvB5k5DuD9SfAoSO5PGaMCsm6XwZMbApsAHta6kEc3+V9miZe4cMomtr9dFwMeEa6fBnx/cQwQ==",
+  "dgSpecHash": "eiaThODPqx7XO3NlQYX5UFWf4tVZCtW+2YL/Z8huNOFIZgbyRFxnleB4PzAPsGuvyYZOt1hKc9FNTbddauKoLA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Lolis\\OneDrive\\Documenten\\Kin_Alturism_Model\\Kin_Alturism_Model\\Kin_Alturism_Model.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\joepk\\Documents\\Kin_Alturism_Model\\Kin_Alturism_Model\\Kin_Alturism_Model.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\joepk\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.28\\microsoft.netcore.app.host.win-x64.6.0.28.nupkg.sha512",
+    "C:\\Users\\joepk\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.28\\microsoft.aspnetcore.app.ref.6.0.28.nupkg.sha512",
+    "C:\\Users\\joepk\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.28\\microsoft.windowsdesktop.app.ref.6.0.28.nupkg.sha512",
+    "C:\\Users\\joepk\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.28\\microsoft.netcore.app.ref.6.0.28.nupkg.sha512"
+  ],
   "logs": []
 }
