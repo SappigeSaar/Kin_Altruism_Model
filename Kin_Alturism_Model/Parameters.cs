@@ -35,6 +35,10 @@ namespace Kin_Alturism_Model
         //possible values disabilityChance
         public const int disabilityChance = 0;
 
+        //halfway point
+        //possible values??
+        public const int altruismHalfwayPoint = 8;
+
         //chance of selfish altruism bonus
         //possible values selfishBonus [0 - 100]
         public const int selfishBonus = 0;
