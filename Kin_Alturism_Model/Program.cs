@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System;
 using System.Reflection.Metadata.Ecma335;
+using System.Runtime.CompilerServices;
 
 Main main = new Main();
 public class Main
@@ -40,9 +41,62 @@ public class Main
     /// </summary>
     public void Initialise()
     {
+        dominance firstHalf;
+        dominance secondHalf;
         //set up all the creatures
-        
+
         //read the initiattion Parameters from a file
+        StreamReader reader = new StreamReader("C:\\Users\\Lolis\\OneDrive\\Documenten\\Kin_Alturism_Model\\Kin_Alturism_Model\\initParameters1.txt");
+
+        string line = reader.ReadLine();
+
+
+        if (line == "first")
+        {
+            firstHalf = dominance.dominant;
+            secondHalf = dominance.recessive;
+        }
+        else
+        {
+            firstHalf = dominance.recessive;
+            secondHalf = dominance.dominant;
+        }
+        
+
+        line = reader.ReadLine();
+        int halfwayPoint = int.Parse(line);
+
+        line = reader.ReadLine();
+        string[] distribution = line.Split(',');
+
+        for (int alturism = 0; alturism < distribution.Length; alturism++)
+        {
+            dominance dominance;
+            if (alturism < halfwayPoint)
+                dominance = firstHalf;
+            else
+                dominance = secondHalf;
+
+            int total = int.Parse(distribution[alturism]);
+
+            //make the fems
+            for (int j = 0; j < (total/2); j++)
+            {
+                Creature creature = new Creature(sexgene.X, alturism, dominance, sexgene.X, alturism, dominance);
+                population.Add(creature);
+                females.Add(creature);
+            }
+
+            //make the mans
+            for (int j = (total / 2); j < total; j++)
+            {
+                Creature creature = new Creature(sexgene.X, alturism, dominance, sexgene.Y, alturism, dominance);
+                population.Add(creature);
+                males.Add(creature);
+            }
+        }
+
+        Console.WriteLine("initialise complete");
     }
 
     /// <summary>

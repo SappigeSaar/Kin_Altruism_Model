@@ -1,4 +1,0 @@
-﻿<population size (not neccicary??)>
-<L for lower half dominant, U for upper half dominant>
-<int for halfway point>
-<amount of creatures with alturism 0>, <amount of creatures with alturism 1>, <amou...>
