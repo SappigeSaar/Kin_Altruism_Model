@@ -1,10 +1,4 @@
-﻿--setup altruism gene
---possible values of initialAltruism: "full", "none", "mixed"
-full
---possible values of dominanceHalf: "first", "second"
-first
-
---setup creatures
-X 3 dominant X 8 recessive
-X 5 dominant Y 0 dominant
-
+﻿<population size (not neccicary??)>
+<L for lower half dominant, U for upper half dominant>
+<int for halfway point>
+<amount of creatures with alturism 0>, <amount of creatures with alturism 1>, <amou...>
