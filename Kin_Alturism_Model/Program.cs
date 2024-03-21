@@ -12,6 +12,8 @@ using System.Runtime.CompilerServices;
 Main main = new Main();
 public class Main
 {
+    Stream file = File.Open("..\\..\\..\\outputs\\outputAt.txt", FileMode.OpenOrCreate);
+
     List<Creature> population = new List<Creature>();
     List<Creature> males = new List<Creature>();
     List<Creature> females = new List<Creature>();
@@ -33,7 +35,7 @@ public class Main
 
         PrintResults();
 
-        Console.WriteLine(":3");
+        Console.WriteLine("done :3");
     }
 
     /// <summary>
@@ -46,7 +48,7 @@ public class Main
         //set up all the creatures
 
         //read the initiattion Parameters from a file
-        StreamReader reader = new StreamReader("C:\\Users\\Lolis\\OneDrive\\Documenten\\Kin_Alturism_Model\\Kin_Alturism_Model\\initParameters1.txt");
+        StreamReader reader = new StreamReader("..\\..\\..\\initParameters1.txt");
 
         string line = reader.ReadLine();
 
@@ -69,20 +71,20 @@ public class Main
         line = reader.ReadLine();
         string[] distribution = line.Split(',');
 
-        for (int alturism = 0; alturism < distribution.Length; alturism++)
+        for (int altruism = 0; altruism < distribution.Length; altruism++)
         {
             dominance dominance;
-            if (alturism < halfwayPoint)
+            if (altruism < halfwayPoint)
                 dominance = firstHalf;
             else
                 dominance = secondHalf;
 
-            int total = int.Parse(distribution[alturism]);
+            int total = int.Parse(distribution[altruism]);
 
             //make the fems
             for (int j = 0; j < (total/2); j++)
             {
-                Creature creature = new Creature(sexgene.X, alturism, dominance, sexgene.X, alturism, dominance);
+                Creature creature = new Creature(sexgene.X, altruism, dominance, sexgene.X, altruism, dominance);
                 population.Add(creature);
                 females.Add(creature);
             }
@@ -90,7 +92,7 @@ public class Main
             //make the mans
             for (int j = (total / 2); j < total; j++)
             {
-                Creature creature = new Creature(sexgene.X, alturism, dominance, sexgene.Y, alturism, dominance);
+                Creature creature = new Creature(sexgene.X, altruism, dominance, sexgene.Y, altruism, dominance);
                 population.Add(creature);
                 males.Add(creature);
             }
@@ -112,17 +114,36 @@ public class Main
             AssignFood();
 
             //run the creature iteration
-           foreach (Creature creature in population)
+            foreach (Creature creature in population)
             {
                 //creature phase\
                 creature.RunIteration();//foodupdate
 
+                
+            }
+            //only after all food is handed out, check population. otherwise a creature might die and get handed food afterwards
+            foreach (Creature creature in population)
+            {
                 //kills the creatures 
                 if (creature.Dies())
                 {
                     population.Remove(creature);
+
+                    //also remove from list of sex
+                    if (creature.sex == physicalsex.male)
+                    {
+                        males.Remove(creature);
+                    }
+                    else
+                    {
+                        females.Remove(creature);
+                    }
                 }
             }
+
+
+            List<Creature> newM = new List<Creature>();
+            List<Creature> newF = new List<Creature>();
 
             //make new creatures
             foreach (Creature female in females)
@@ -134,17 +155,27 @@ public class Main
                             Creature creature = new Creature(female, male);
                             
                             //add the creature to all the right lists
-                            population.Add(creature);
                             if (creature.sex == physicalsex.female)
-                                females.Add(creature);
+                                newF.Add(creature);
                             else
-                                males.Add(creature);
+                                newM.Add(creature);
 
                             //creatures cant make multiple babies in the same iteration
                             female.fertile = false;
                             male.fertile = false;
                         }
             }
+            foreach (Creature gal in newF)
+            {
+                females.Add(gal);
+                population.Add(gal);
+            }
+            foreach (Creature ew in newM)
+            {
+                males.Add(ew);
+                population.Add(ew);
+            }
+
 
             foreach (Creature creature in population)
             {
@@ -189,8 +220,8 @@ public class Main
 
 public class gene
 {
-    public int ?altruism;
-    public dominance ?dom;
+    public int altruism;
+    public dominance dom;
     public sexgene type;
 
     public gene(int alt, dominance dommy, sexgene sex)
@@ -199,6 +230,11 @@ public class gene
         {
             this.altruism = alt;
             this.dom = dommy;
+        }
+        else
+        {
+            this.altruism = 69;
+            this.dom = dominance.dominant;
         }
         this.type = sex;
     }

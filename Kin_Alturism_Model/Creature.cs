@@ -35,7 +35,7 @@ namespace Kin_Alturism_Model
         //phenotype
         public physicalsex sex;
         private bool doubledominance;
-        private int? phenoaltruism;
+        private int phenoaltruism;
         Random rand = new Random();
         public bool fertile;
         public bool disability;
@@ -45,7 +45,7 @@ namespace Kin_Alturism_Model
             {
                 gene[] genes = new gene[] { gene1, gene2 };
                 if (doubledominance) return (int)genes[rand.Next(1, 3)].altruism;
-                else return (int)phenoaltruism;
+                else return phenoaltruism;
             }
         }
 
@@ -196,7 +196,7 @@ namespace Kin_Alturism_Model
                         {
                             if (gene1.altruism >= Parameters.altruismHalfwayPoint && gene1.altruism - 1 >= Parameters.altruismHalfwayPoint)
                             {
-                                gene1.altruism += 1;
+                                gene1.altruism -= 1;
                             }
                         }
                     }
@@ -213,8 +213,42 @@ namespace Kin_Alturism_Model
                         {
                             if (gene2.altruism >= Parameters.altruismHalfwayPoint && gene2.altruism - 1 >= Parameters.altruismHalfwayPoint)
                             {
-                                gene2.altruism += 1;
+                                gene2.altruism -= 1;
                             }
+                        }
+                    }
+                }
+                else if (gene1.type == sexgene.X)
+                {
+                    if (mutationDirection == 1)
+                    {
+                        if (gene1.altruism >= Parameters.altruismHalfwayPoint && gene1.altruism + 1 >= Parameters.altruismHalfwayPoint)
+                        {
+                            gene1.altruism += 1;
+                        }
+                    }
+                    else
+                    {
+                        if (gene1.altruism >= Parameters.altruismHalfwayPoint && gene1.altruism - 1 >= Parameters.altruismHalfwayPoint)
+                        {
+                            gene1.altruism -= 1;
+                        }
+                    }
+                }
+                else
+                {
+                    if (mutationDirection == 1)
+                    {
+                        if (gene2.altruism >= Parameters.altruismHalfwayPoint && gene2.altruism + 1 >= Parameters.altruismHalfwayPoint)
+                        {
+                            gene2.altruism += 1;
+                        }
+                    }
+                    else
+                    {
+                        if (gene2.altruism >= Parameters.altruismHalfwayPoint && gene2.altruism - 1 >= Parameters.altruismHalfwayPoint)
+                        {
+                            gene2.altruism -= 1;
                         }
                     }
                 }
@@ -238,6 +272,7 @@ namespace Kin_Alturism_Model
             {
                 if (gene1.dom == gene2.dom)
                 {
+                    this.phenoaltruism = 69;
                     this.doubledominance = true;
                 }
                 else
@@ -275,4 +310,5 @@ namespace Kin_Alturism_Model
         }
 
     }
+
 }
