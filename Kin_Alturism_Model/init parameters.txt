@@ -1,1 +1,10 @@
-﻿
+﻿--setup altruism gene
+--possible values of initialAltruism: "full", "none", "mixed"
+full
+--possible values of dominanceHalf: "first", "second"
+first
+
+--setup creatures
+X 3 dominant X 8 recessive
+X 5 dominant Y 0 dominant
+

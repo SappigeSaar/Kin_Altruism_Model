@@ -302,6 +302,47 @@ public class Creature
         }
 
         //mutate
+        if (mutated)
+        {
+            if (gene1.type == gene2.type)
+            {
+                if (momOrDad == 1)
+                {
+                    if (mutationDirection == 1)
+                    {
+                        if (gene1.altruism >= Parameters.altruismHalfwayPoint && gene1.altruism + 1 >= Parameters.altruismHalfwayPoint)
+                        {
+                            gene1.altruism += 1;
+                        }
+                    }
+                    else
+                    {
+                        if (gene1.altruism >= Parameters.altruismHalfwayPoint && gene1.altruism - 1 >= Parameters.altruismHalfwayPoint)
+                        {
+                            gene1.altruism += 1;
+                        }
+                    }
+                }
+                else
+                {
+                    if (mutationDirection == 1)
+                    {
+                        if (gene2.altruism >= Parameters.altruismHalfwayPoint && gene2.altruism + 1 >= Parameters.altruismHalfwayPoint)
+                        {
+                            gene2.altruism += 1;
+                        }
+                    }
+                    else
+                    {
+                        if (gene2.altruism >= Parameters.altruismHalfwayPoint && gene2.altruism - 1 >= Parameters.altruismHalfwayPoint)
+                        {
+                            gene2.altruism += 1;
+                        }
+                    }
+                }
+            }
+        }
+        
 
         //decide sex and altruism phenotype
         if(gene1.type == sexgene.Y)
@@ -344,22 +385,13 @@ public class Creature
     }
 
     //creates a creature based on simple parameters
-    public Creature(physicalsex sex, int gen1, dominance dom1, int gen2, dominance dom2)
+    public Creature(sexgene sex1, int gen1, dominance dom1, sexgene sex2, int gen2, dominance dom2)
     {
         this.food = 100;
-        this.sex = sex;
         this.disability = false;
-        sexgene sexgene2;
-        if (sex == physicalsex.male)
-        {
-            sexgene2 = sexgene.Y;
-        }
-        else
-        {
-            sexgene2 = sexgene.X;
-        }
-        this.gene1 = new gene(gen1, dom1, sexgene.X);
-        this.gene2 = new gene(gen2, dom2, sexgene2);
+
+        this.gene1 = new gene(gen1, dom1, sex1);
+        this.gene2 = new gene(gen2, dom2, sex2);
         this.children = new List<Creature>();
         this.fertile = false;
         this.gotfood = false;
