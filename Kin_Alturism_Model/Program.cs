@@ -142,7 +142,20 @@ public class Main
             first = "recessive";
         }
         //writes the setup requirements
-        streamWriter.WriteLine("Seed: " + seed.ToString() +", first half: " + first + ", halfway point: " + halfwayPoint + "\n");
+        streamWriter.Write("Seed: " + seed.ToString() + "\n");
+        streamWriter.Write("Parameters: ");
+        streamWriter.Write("number of bundles = " + parameters.numOfBundles);
+        streamWriter.Write(", food per bundle = " + parameters.foodPerBundle);
+        streamWriter.Write(", max food bar = " + parameters.maxfood);
+        streamWriter.Write(", hungry bound = " + parameters.hungrybound);
+        streamWriter.Write(", hunger = " + parameters.hunger);
+        streamWriter.Write(", mating food lower bound = " + parameters.mateBound);
+        streamWriter.Write(", mutation chance = " + parameters.mutationChance);
+        streamWriter.Write(", disability chacne = " + parameters.disabilityChance);
+        streamWriter.Write(", first half = " + first);
+        streamWriter.Write(", halfway point = " + halfwayPoint);
+        streamWriter.Write(", selfish bonus = " + parameters.selfishBonus);
+        streamWriter.Write(", gain from bonus = " + parameters.bonusGain);
     }
     /// <summary>
     /// runs the program itself

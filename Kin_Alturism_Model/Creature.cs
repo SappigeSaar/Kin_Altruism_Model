@@ -34,10 +34,10 @@ namespace Kin_Alturism_Model
         }
 
         //phenotype
+        Random rand;
         public physicalsex sex;
         private bool doubledominance;
         private int phenoaltruism;
-        Random rand = new Random();
         public bool fertile;
         public bool disability;
         int altruism
@@ -160,9 +160,10 @@ namespace Kin_Alturism_Model
         }
 
         //creates a new creature based on two parents
-        public Creature(Creature mommy, Creature daddy, Parameters parameterlink)
+        public Creature(Creature mommy, Creature daddy, Parameters parameterlink, Random rand)
         {
             //random number to see if mutated, mutation + (1) or - (2), mom (1) or dad (2) gene mutation, disabled, mommygene, daddygene,
+            this.rand = rand;
             bool mutated = rand.Next(1, 101) < parameterlink.mutationChance;
             bool disabled = rand.Next(1, 101) < parameterlink.disabilityChance;
             int mutationDirection = rand.Next(1, 3);
@@ -314,7 +315,7 @@ namespace Kin_Alturism_Model
         }
 
         //creates a creature based on simple parameters
-        public Creature(sexgene sex1, int gen1, dominance dom1, sexgene sex2, int gen2, dominance dom2, Parameters parameterlink)
+        public Creature(sexgene sex1, int gen1, dominance dom1, sexgene sex2, int gen2, dominance dom2, Parameters parameterlink, Random rand)
         {
             this.food = 100;
             this.disability = false;
@@ -325,6 +326,7 @@ namespace Kin_Alturism_Model
             this.fertile = false;
             this.gotfood = false;
             this.parameterlink = parameterlink;
+            this.rand = rand;
         }
 
     }
