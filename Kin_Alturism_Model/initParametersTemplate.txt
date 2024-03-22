@@ -1,4 +1,4 @@
-﻿<population size (not neccicary??)>
-<first for first half dominant, second for second half dominant>
-<int for halfway point>
+﻿<int for halfway point>
+<list of variable names and their desired values (unordered) bv: numOfBundles 5, foodPerBundle 3>
+<'first' for first half dominant, 'second' for second half dominant>
 <amount of creatures with alturism 0>,<amount of creatures with alturism 1>,<amou...>

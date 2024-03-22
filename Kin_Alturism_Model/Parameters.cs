@@ -10,30 +10,30 @@ namespace Kin_Alturism_Model
     {
         //amount of creatures given food for each loop
         //possible values numOfBundles [0 - 2147483647]
-        public const int numOfBundles = 5;
+        public int numOfBundles = 5;
         //amount of food handed to a creature when given food
         //possible values foodPerBundle [1 - 100]
-        public const int foodPerBundle = 3;
+        public int foodPerBundle = 3;
 
         //food limit
         //possible values maxfood [0 - 2147483647]
-        public const int maxfood = 100;
+        public int maxfood = 100;
         //at what food value a creature is considered starving
         //possible values hungrybound [0 - 100]
-        public const int hungrybound = 10;
+        public int hungrybound = 10;
         //at what rate food decreases per loop
         //possible values hunger [0 - 100]
-        public const int hunger = 1;
+        public int hunger = 1;
         //lower bound for reproduction
         //possible values mateBound [0 - maxfood]
-        public const int mateBound = 60;
+        public int mateBound = 60;
 
         //chance of mutation in offspring
         //possible values mutationChance: [0 - 100]
-        public const int mutationChance = 3;
+        public int mutationChance = 3;
         //chance of disability in offspring
         //possible values disabilityChance
-        public const int disabilityChance = 0;
+        public int disabilityChance = 0;
 
         //halfway point
         //possible values??
@@ -41,14 +41,57 @@ namespace Kin_Alturism_Model
 
         //chance of selfish altruism bonus
         //possible values selfishBonus [0 - 100]
-        public const int selfishBonus = 0;
+        public int selfishBonus = 0;
         //amount of food gained from altruism bonus
         //possible values bonusGain [0 - maxfood]
-        public const int bonusGain = 0;
+        public int bonusGain = 0;
 
-        public Parameters(int halfwaypoint)
+        public Parameters(int halfwaypoint, string[] parameters)
         {
             this.altruismHalfwayPoint = halfwaypoint;
+
+            if (parameters != null)
+                foreach (string p in parameters)
+                {
+                    string[] ps = p.Split(' ');
+                    string paramType = ps[0];
+                    int value = int.Parse(ps[1]);
+
+                    switch (paramType)
+                    {
+                        case ("numOfBundles"):
+                            this.numOfBundles = value;
+                            break;
+                        case ("foodPerBundle"):
+                            this.foodPerBundle = value;
+                            break;
+                        case ("maxfood"):
+                            this.maxfood = value;
+                            break;
+                        case ("hungrybound"):
+                            this.hungrybound = value;
+                            break;
+                        case ("hunger"):
+                            this.hunger = value;
+                            break;
+                        case ("mateBound"):
+                            this.mateBound = value;
+                            break;
+                        case ("mutationChance"):
+                            this.mutationChance = value;
+                            break;
+                        case ("disabilityChance"):
+                            this.disabilityChance = value;
+                            break;
+                        case ("selfishBonus"):
+                            this.selfishBonus = value;
+                            break;
+                        case ("bonusGain"):
+                            this.bonusGain = value;
+                            break;
+
+                    }
+                }
         }
     }
 }

@@ -41,7 +41,7 @@ public class Main
         string path = "..\\..\\..\\output\\outputAt-" + timestamp + ".txt";
         Stream file = File.Open(path, FileMode.OpenOrCreate);
         StreamWriter writer = new StreamWriter(file);
-        this.parameters = new(halfwayPoint);
+        
 
         Initialise();
 
@@ -67,6 +67,17 @@ public class Main
 
         string line = reader.ReadLine();
 
+        
+        
+        this.halfwayPoint = int.Parse(line);
+
+        line = reader.ReadLine();
+        string[] p = line.Split(',');
+
+        this.parameters = new(halfwayPoint, p);
+
+
+        line = reader.ReadLine();
 
         if (line == "first")
         {
@@ -82,8 +93,7 @@ public class Main
         }
         
 
-        line = reader.ReadLine();
-        this.halfwayPoint = int.Parse(line);
+        
 
         line = reader.ReadLine();
         string[] distribution = line.Split(',');
@@ -242,7 +252,7 @@ public class Main
     {
         List<int> indexes = new List<int>();
         //create list of random integers(representing the indexes
-        for (int i = 0; i < Parameters.numOfBundles; i++)
+        for (int i = 0; i < parameters.numOfBundles; i++)
         {
             int randomnumber = random.Next(population.Count());
             while (indexes.Contains(randomnumber))

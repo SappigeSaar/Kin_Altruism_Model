@@ -25,9 +25,9 @@ namespace Kin_Alturism_Model
 
             set
             {
-                if (value > Parameters.maxfood)
+                if (value > parameterlink.maxfood)
                 {
-                    food = Parameters.maxfood;
+                    food = parameterlink.maxfood;
                 }
                 else { food = value; }
             }
@@ -83,13 +83,13 @@ namespace Kin_Alturism_Model
         /// </summary>
         public void RunIteration()
         {
-            food = food - Parameters.hunger;
+            food = food - parameterlink.hunger;
 
             if (gotfood)
                 Handout();
 
             //see if the creature can be fertile this phase
-            if (food > Parameters.mateBound)
+            if (food > parameterlink.mateBound)
             {
                 fertile = true;
             }
@@ -114,9 +114,9 @@ namespace Kin_Alturism_Model
                 {
                     //if fam considered hungry, food handed out
                     int x = fam.food;
-                    if (x < Parameters.hungrybound)
+                    if (x < parameterlink.hungrybound)
                     {
-                        fam.foodupdate = x + Parameters.foodPerBundle;
+                        fam.foodupdate = x + parameterlink.foodPerBundle;
                         found = true;
                         break;
                     }
@@ -127,7 +127,7 @@ namespace Kin_Alturism_Model
 
             }
             //if no hungry fam found, eat food itself
-            if (!found) foodupdate = food + Parameters.foodPerBundle;
+            if (!found) foodupdate = food + parameterlink.foodPerBundle;
             gotfood = false;
         }
 
@@ -163,8 +163,8 @@ namespace Kin_Alturism_Model
         public Creature(Creature mommy, Creature daddy, Parameters parameterlink)
         {
             //random number to see if mutated, mutation + (1) or - (2), mom (1) or dad (2) gene mutation, disabled, mommygene, daddygene,
-            bool mutated = rand.Next(1, 101) < Parameters.mutationChance;
-            bool disabled = rand.Next(1, 101) < Parameters.disabilityChance;
+            bool mutated = rand.Next(1, 101) < parameterlink.mutationChance;
+            bool disabled = rand.Next(1, 101) < parameterlink.disabilityChance;
             int mutationDirection = rand.Next(1, 3);
             int momOrDad = rand.Next(1, 3);
 
