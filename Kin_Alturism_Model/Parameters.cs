@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Kin_Alturism_Model
 {
-    public static class Parameters
+    public class Parameters
     {
         //amount of creatures given food for each loop
         //possible values numOfBundles [0 - 2147483647]
@@ -37,7 +37,7 @@ namespace Kin_Alturism_Model
 
         //halfway point
         //possible values??
-        public const int altruismHalfwayPoint = 8;
+        public int altruismHalfwayPoint;
 
         //chance of selfish altruism bonus
         //possible values selfishBonus [0 - 100]
@@ -46,6 +46,9 @@ namespace Kin_Alturism_Model
         //possible values bonusGain [0 - maxfood]
         public const int bonusGain = 0;
 
-
+        public Parameters(int halfwaypoint)
+        {
+            this.altruismHalfwayPoint = halfwaypoint;
+        }
     }
 }

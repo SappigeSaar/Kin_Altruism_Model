@@ -12,13 +12,15 @@ using System.Runtime.CompilerServices;
 Main main = new Main();
 public class Main
 {
-    Stream file = File.Open("..\\..\\..\\outputs\\outputAt.txt", FileMode.OpenOrCreate);
-
+    Parameters parameters;
     List<Creature> population = new List<Creature>();
     List<Creature> males = new List<Creature>();
     List<Creature> females = new List<Creature>();
 
-    Random random = new Random();
+    Random random;
+
+    int halfwayPoint;
+    bool firstHalf;
 
     public Main()
     {
@@ -29,11 +31,24 @@ public class Main
         string me = "EmmaReal?";
         Console.WriteLine(me);
 
+        //set up seed and timestamp for output file
+        DateTime now = DateTime.Now;
+        string timestamp = now.ToString().Replace('/', '-').Replace(' ', '_').Replace(':', '-');
+        int timeseed = 10000 * now.Hour + 100 * now.Minute + now.Second;
+
+        //set up random with seed, set up file 
+        random = new Random(timeseed);
+        string path = "..\\..\\..\\output\\outputAt-" + timestamp + ".txt";
+        Stream file = File.Open(path, FileMode.OpenOrCreate);
+        StreamWriter writer = new StreamWriter(file);
+        this.parameters = new(halfwayPoint);
+
         Initialise();
 
-        RunLoop();
+        PrintSetup(writer, timeseed);
 
-        PrintResults();
+        RunLoop(writer);
+
 
         Console.WriteLine("done :3");
     }
@@ -57,16 +72,18 @@ public class Main
         {
             firstHalf = dominance.dominant;
             secondHalf = dominance.recessive;
+            this.firstHalf = true;
         }
         else
         {
             firstHalf = dominance.recessive;
             secondHalf = dominance.dominant;
+            this.firstHalf = false;
         }
         
 
         line = reader.ReadLine();
-        int halfwayPoint = int.Parse(line);
+        this.halfwayPoint = int.Parse(line);
 
         line = reader.ReadLine();
         string[] distribution = line.Split(',');
@@ -84,7 +101,7 @@ public class Main
             //make the fems
             for (int j = 0; j < (total/2); j++)
             {
-                Creature creature = new Creature(sexgene.X, altruism, dominance, sexgene.X, altruism, dominance);
+                Creature creature = new Creature(sexgene.X, altruism, dominance, sexgene.X, altruism, dominance, parameters);
                 population.Add(creature);
                 females.Add(creature);
             }
@@ -92,19 +109,35 @@ public class Main
             //make the mans
             for (int j = (total / 2); j < total; j++)
             {
-                Creature creature = new Creature(sexgene.X, altruism, dominance, sexgene.Y, altruism, dominance);
+                Creature creature = new Creature(sexgene.X, altruism, dominance, sexgene.Y, altruism, dominance, parameters);
                 population.Add(creature);
                 males.Add(creature);
             }
         }
+        reader.Close();
 
         Console.WriteLine("initialise complete");
     }
 
+
+    public void PrintSetup(StreamWriter streamWriter, int seed)
+    {
+        string first;
+        if (firstHalf)
+        {
+            first = "dominant";
+        }
+        else
+        {
+            first = "recessive";
+        }
+        //writes the setup requirements
+        streamWriter.WriteLine("Seed: " + seed.ToString() +", first half: " + first + ", halfway point: " + halfwayPoint + "\n");
+    }
     /// <summary>
     /// runs the program itself
     /// </summary>
-    public void RunLoop()
+    public void RunLoop(StreamWriter file)
     {
         int phaseCount = 1000;
 
@@ -152,7 +185,7 @@ public class Main
                     foreach (Creature male in males)
                         if (male.fertile)
                         {
-                            Creature creature = new Creature(female, male);
+                            Creature creature = new Creature(female, male, parameters);
                             
                             //add the creature to all the right lists
                             if (creature.sex == physicalsex.female)
@@ -185,6 +218,8 @@ public class Main
             }
 
             phaseCount--;
+            //print state to file youre working on
+            PrintResults(file);
         }
 
         
@@ -193,9 +228,14 @@ public class Main
     /// <summary>
     /// put the results og the run into a file
     /// </summary>
-    public void PrintResults()
+    public void PrintResults(StreamWriter writer)
     {
-
+        foreach (Creature creature in population)
+        {
+            writer.Write(creature.ToString());
+            writer.Write(", ");
+        }
+        writer.Write('\n');
     }
 
     public void AssignFood()
@@ -225,6 +265,20 @@ public class gene
     public int altruism;
     public dominance dom;
     public sexgene type;
+
+    public override string ToString()
+    {
+        string output;
+        if (type == sexgene.X)
+        {
+            output = "X " + dom.ToString() + " " + altruism.ToString();
+        }
+        else
+        {
+            output = "Y null null";
+        }
+        return base.ToString();
+    }
 
     public gene(int alt, dominance dommy, sexgene sex)
     {

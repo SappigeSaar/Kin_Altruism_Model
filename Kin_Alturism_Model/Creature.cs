@@ -8,6 +8,7 @@ namespace Kin_Alturism_Model
 {
     public class Creature
     {
+        Parameters parameterlink;
         //parents and list of childern
         Creature? parent1;
         Creature? parent2;
@@ -44,7 +45,7 @@ namespace Kin_Alturism_Model
             get
             {
                 gene[] genes = new gene[] { gene1, gene2 };
-                if (doubledominance) return (int)genes[rand.Next(1, 3)].altruism;
+                if (doubledominance) return (int)genes[rand.Next(0, 2)].altruism;
                 else return phenoaltruism;
             }
         }
@@ -130,6 +131,21 @@ namespace Kin_Alturism_Model
             gotfood = false;
         }
 
+        //returns a string to evaluate the creature as a whole
+        public override string ToString()
+        {
+            string MorF;
+            if(sex == physicalsex.male)
+            {
+                MorF = "M";
+            }
+            else
+            {
+                MorF = "F";
+            }
+            return MorF + " " + gene1.ToString() + " " + gene2.ToString();
+        }
+
         //returns hashset of related creatures
         public HashSet<Creature> related
         {
@@ -144,7 +160,7 @@ namespace Kin_Alturism_Model
         }
 
         //creates a new creature based on two parents
-        public Creature(Creature mommy, Creature daddy)
+        public Creature(Creature mommy, Creature daddy, Parameters parameterlink)
         {
             //random number to see if mutated, mutation + (1) or - (2), mom (1) or dad (2) gene mutation, disabled, mommygene, daddygene,
             bool mutated = rand.Next(1, 101) < Parameters.mutationChance;
@@ -187,14 +203,14 @@ namespace Kin_Alturism_Model
                     {
                         if (mutationDirection == 1)
                         {
-                            if (gene1.altruism >= Parameters.altruismHalfwayPoint && gene1.altruism + 1 >= Parameters.altruismHalfwayPoint)
+                            if (gene1.altruism >= parameterlink.altruismHalfwayPoint && gene1.altruism + 1 >= parameterlink.altruismHalfwayPoint)
                             {
                                 gene1.altruism += 1;
                             }
                         }
                         else
                         {
-                            if (gene1.altruism >= Parameters.altruismHalfwayPoint && gene1.altruism - 1 >= Parameters.altruismHalfwayPoint)
+                            if (gene1.altruism >= parameterlink.altruismHalfwayPoint && gene1.altruism - 1 >= parameterlink.altruismHalfwayPoint)
                             {
                                 gene1.altruism -= 1;
                             }
@@ -204,14 +220,14 @@ namespace Kin_Alturism_Model
                     {
                         if (mutationDirection == 1)
                         {
-                            if (gene2.altruism >= Parameters.altruismHalfwayPoint && gene2.altruism + 1 >= Parameters.altruismHalfwayPoint)
+                            if (gene2.altruism >= parameterlink.altruismHalfwayPoint && gene2.altruism + 1 >= parameterlink.altruismHalfwayPoint)
                             {
                                 gene2.altruism += 1;
                             }
                         }
                         else
                         {
-                            if (gene2.altruism >= Parameters.altruismHalfwayPoint && gene2.altruism - 1 >= Parameters.altruismHalfwayPoint)
+                            if (gene2.altruism >= parameterlink.altruismHalfwayPoint && gene2.altruism - 1 >= parameterlink.altruismHalfwayPoint)
                             {
                                 gene2.altruism -= 1;
                             }
@@ -222,14 +238,14 @@ namespace Kin_Alturism_Model
                 {
                     if (mutationDirection == 1)
                     {
-                        if (gene1.altruism >= Parameters.altruismHalfwayPoint && gene1.altruism + 1 >= Parameters.altruismHalfwayPoint)
+                        if (gene1.altruism >= parameterlink.altruismHalfwayPoint && gene1.altruism + 1 >= parameterlink.altruismHalfwayPoint)
                         {
                             gene1.altruism += 1;
                         }
                     }
                     else
                     {
-                        if (gene1.altruism >= Parameters.altruismHalfwayPoint && gene1.altruism - 1 >= Parameters.altruismHalfwayPoint)
+                        if (gene1.altruism >= parameterlink.altruismHalfwayPoint && gene1.altruism - 1 >= parameterlink.altruismHalfwayPoint)
                         {
                             gene1.altruism -= 1;
                         }
@@ -239,14 +255,14 @@ namespace Kin_Alturism_Model
                 {
                     if (mutationDirection == 1)
                     {
-                        if (gene2.altruism >= Parameters.altruismHalfwayPoint && gene2.altruism + 1 >= Parameters.altruismHalfwayPoint)
+                        if (gene2.altruism >= parameterlink.altruismHalfwayPoint && gene2.altruism + 1 >= parameterlink.altruismHalfwayPoint)
                         {
                             gene2.altruism += 1;
                         }
                     }
                     else
                     {
-                        if (gene2.altruism >= Parameters.altruismHalfwayPoint && gene2.altruism - 1 >= Parameters.altruismHalfwayPoint)
+                        if (gene2.altruism >= parameterlink.altruismHalfwayPoint && gene2.altruism - 1 >= parameterlink.altruismHalfwayPoint)
                         {
                             gene2.altruism -= 1;
                         }
@@ -294,10 +310,11 @@ namespace Kin_Alturism_Model
             this.children = new List<Creature>();
             this.fertile = false;
             this.gotfood = false;
+            this.parameterlink = parameterlink;
         }
 
         //creates a creature based on simple parameters
-        public Creature(sexgene sex1, int gen1, dominance dom1, sexgene sex2, int gen2, dominance dom2)
+        public Creature(sexgene sex1, int gen1, dominance dom1, sexgene sex2, int gen2, dominance dom2, Parameters parameterlink)
         {
             this.food = 100;
             this.disability = false;
@@ -307,6 +324,7 @@ namespace Kin_Alturism_Model
             this.children = new List<Creature>();
             this.fertile = false;
             this.gotfood = false;
+            this.parameterlink = parameterlink;
         }
 
     }
