@@ -11,7 +11,7 @@ namespace Kin_Alturism_Model
         //parents and list of childern
         Creature? parent1;
         Creature? parent2;
-        List<Creature> children;
+        public List<Creature> children;
 
         //amount of food it has and if it got food this loop
         private int food;

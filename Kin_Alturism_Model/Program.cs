@@ -159,6 +159,8 @@ public class Main
                                 newF.Add(creature);
                             else
                                 newM.Add(creature);
+                            male.children.Add(creature);
+                            female.children.Add(creature);
 
                             //creatures cant make multiple babies in the same iteration
                             female.fertile = false;
