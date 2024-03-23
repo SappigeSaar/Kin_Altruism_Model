@@ -231,6 +231,7 @@ public class Main
                         {
                             removedF.Add(creature);
                         }
+                        foreach(Creature related in creature.related.ToList()) { related.RelationsUpdate(); }
                     }
                 }
                 foreach (Creature creature in removedM)
@@ -282,11 +283,6 @@ public class Main
                 }
 
 
-                foreach (Creature creature in population)
-                {
-                    creature.RelationsUpdate();
-                }
-
                 phaseCount--;
                 //print state to file youre working on
                 PrintResults(file);
@@ -324,6 +320,7 @@ public class Main
                         {
                             removedF.Add(creature);
                         }
+                        foreach (SimpleCreature related in creature.related.ToList()) { related.RelationsUpdate(); }
                     }
                 }
                 foreach (SimpleCreature creature in removedM)
@@ -414,7 +411,7 @@ public class Main
     {
         List<int> indexes = new List<int>();
         //create list of random integers(representing the indexes
-        for (int i = 0; i < parameters.numOfBundles; i++)
+        for (int i = 0; i < Math.Min(parameters.numOfBundles, population.Count()); i++)
         {
             int randomnumber = random.Next(population.Count());
             while (indexes.Contains(randomnumber))
@@ -433,7 +430,7 @@ public class Main
     {
         List<int> indexes = new List<int>();
         //create list of random integers(representing the indexes
-        for (int i = 0; i < parameters.numOfBundles; i++)
+        for (int i = 0; i < Math.Min(parameters.numOfBundles, simplepopulation.Count()); i++)
         {
             int randomnumber = random.Next(simplepopulation.Count());
             while (indexes.Contains(randomnumber))
@@ -467,7 +464,7 @@ public class gene
         {
             output = "Y null null";
         }
-        return base.ToString();
+        return output;
     }
 
     public gene(int alt, dominance dommy, sexgene sex)

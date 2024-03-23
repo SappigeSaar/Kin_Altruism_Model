@@ -20,10 +20,10 @@ namespace Kin_Alturism_Model
         public int maxfood = 100;
         //at what food value a creature is considered starving
         //possible values hungrybound [0 - 100]
-        public int hungrybound = 30;
+        public int hungrybound = 40;
         //at what rate food decreases per loop
         //possible values hunger [0 - 100]
-        public int hunger = 35;
+        public int hunger = 15;
         //lower bound for reproduction
         //possible values mateBound [0 - maxfood]
         public int mateBound = 60;

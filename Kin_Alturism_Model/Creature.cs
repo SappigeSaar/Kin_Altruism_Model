@@ -72,10 +72,9 @@ namespace Kin_Alturism_Model
         {
             if (parent1 != null) if (parent1.Dies()) parent1 = null;
             if (parent2 != null) if (parent2.Dies()) parent2 = null;
-            foreach (Creature child in children)
-            {
-                if (child.Dies()) children.Remove(child);
-            }
+            List<Creature> removedC = new List<Creature>();
+            foreach (Creature child in children) if (child.Dies()) removedC.Add(child);
+            foreach (Creature child in removedC) children.Remove(child);
         }
 
         /// <summary>
