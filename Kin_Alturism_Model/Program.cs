@@ -14,16 +14,21 @@ public class Main
 {
     Parameters parameters;
     List<Creature> population = new List<Creature>();
+    List<SimpleCreature> simplepopulation = new List<SimpleCreature>();
     List<Creature> males = new List<Creature>();
+    List<SimpleCreature> simplemales = new List<SimpleCreature>();
     List<Creature> females = new List<Creature>();
+    List<SimpleCreature> simplefemales = new List<SimpleCreature>();
 
     Random random;
-
+    bool xlinked;
     int halfwayPoint;
     bool firstHalf;
 
     public Main()
     {
+        xlinked = true;
+
         Console.WriteLine("Hello, World!");
 
         Console.WriteLine("Storm here");
@@ -66,10 +71,14 @@ public class Main
         StreamReader reader = new StreamReader("..\\..\\..\\initParameters1.txt");
 
         string line = reader.ReadLine();
-
-        
-        
-        this.halfwayPoint = int.Parse(line);
+        if (line == "none")
+        {
+            xlinked = false;
+        }
+        else
+        {
+            this.halfwayPoint = int.Parse(line);
+        }
 
         line = reader.ReadLine();
         string[] p = line.Split(',');
@@ -97,31 +106,56 @@ public class Main
 
         line = reader.ReadLine();
         string[] distribution = line.Split(',');
-
-        for (int altruism = 0; altruism < distribution.Length; altruism++)
+        if (xlinked)
         {
-            dominance dominance;
-            if (altruism < halfwayPoint)
-                dominance = firstHalf;
-            else
-                dominance = secondHalf;
-
-            int total = int.Parse(distribution[altruism]);
-
-            //make the fems
-            for (int j = 0; j < (total/2); j++)
+            for (int altruism = 0; altruism < distribution.Length; altruism++)
             {
-                Creature creature = new Creature(sexgene.X, altruism, dominance, sexgene.X, altruism, dominance, parameters, random);
-                population.Add(creature);
-                females.Add(creature);
+                dominance dominance;
+                if (altruism < halfwayPoint)
+                    dominance = firstHalf;
+                else
+                    dominance = secondHalf;
+
+                int total = int.Parse(distribution[altruism]);
+
+                //make the fems
+                for (int j = 0; j < (total / 2); j++)
+                {
+                    Creature creature = new Creature(sexgene.X, altruism, dominance, sexgene.X, altruism, dominance, parameters, random);
+                    population.Add(creature);
+                    females.Add(creature);
+                }
+
+                //make the mans
+                for (int j = (total / 2); j < total; j++)
+                {
+                    Creature creature = new Creature(sexgene.X, altruism, dominance, sexgene.Y, altruism, dominance, parameters, random);
+                    population.Add(creature);
+                    males.Add(creature);
+                }
             }
-
-            //make the mans
-            for (int j = (total / 2); j < total; j++)
+        }
+        else
+        {
+            for (int altruism = 0; altruism < distribution.Length; altruism++)
             {
-                Creature creature = new Creature(sexgene.X, altruism, dominance, sexgene.Y, altruism, dominance, parameters, random);
-                population.Add(creature);
-                males.Add(creature);
+                int total = int.Parse(distribution[altruism]);
+
+                //make the fems
+                for (int j = 0; j < (total / 2); j++)
+                {
+                    SimpleCreature creature = new SimpleCreature(physicalsex.female, altruism, parameters, random);
+                    simplepopulation.Add(creature);
+                    simplefemales.Add(creature);
+                }
+
+                //make the mans
+                for (int j = (total / 2); j < total; j++)
+                {
+                    SimpleCreature creature = new SimpleCreature(physicalsex.male, altruism, parameters, random);
+                    simplepopulation.Add(creature);
+                    simplemales.Add(creature);
+                }
             }
         }
         reader.Close();
@@ -164,88 +198,192 @@ public class Main
     {
         int phaseCount = 1000;
 
-        while (phaseCount > 0)
+        if (xlinked)
         {
-            //assign food
-            AssignFood();
-
-            //run the creature iteration
-            foreach (Creature creature in population)
+            while (phaseCount > 0)
             {
-                //creature phase\
-                creature.RunIteration();//foodupdate
+                //assign food
+                AssignFood();
 
-                
-            }
-            //only after all food is handed out, check population. otherwise a creature might die and get handed food afterwards
-            foreach (Creature creature in population)
-            {
-                //kills the creatures 
-                if (creature.Dies())
+                //run the creature iteration
+                foreach (Creature creature in population)
                 {
-                    population.Remove(creature);
+                    //creature phase\
+                    creature.RunIteration();//foodupdate
 
-                    //also remove from list of sex
-                    if (creature.sex == physicalsex.male)
+
+                }
+                //only after all food is handed out, check population. otherwise a creature might die and get handed food afterwards
+                List<Creature> removedM = new List<Creature>();
+                List<Creature> removedF = new List<Creature>();
+
+                foreach (Creature creature in population)
+                {
+                    //kills the creatures 
+                    if (creature.Dies())
                     {
-                        males.Remove(creature);
-                    }
-                    else
-                    {
-                        females.Remove(creature);
+                        //also remove from list of sex
+                        if (creature.sex == physicalsex.male)
+                        {
+                            removedM.Add(creature);
+                        }
+                        else
+                        {
+                            removedF.Add(creature);
+                        }
                     }
                 }
+                foreach (Creature creature in removedM)
+                {
+                    population.Remove(creature);
+                    males.Remove(creature);
+                }
+                foreach (Creature creature in removedF)
+                {
+                    population.Remove(creature);
+                    females.Remove(creature);
+                }
+
+
+                List<Creature> newM = new List<Creature>();
+                List<Creature> newF = new List<Creature>();
+
+                //make new creatures
+                foreach (Creature female in females)
+                {
+                    if (female.fertile)
+                        foreach (Creature male in males)
+                            if (male.fertile)
+                            {
+                                Creature creature = new Creature(female, male, parameters, random);
+
+                                //add the creature to all the right lists
+                                if (creature.sex == physicalsex.female)
+                                    newF.Add(creature);
+                                else
+                                    newM.Add(creature);
+                                male.children.Add(creature);
+                                female.children.Add(creature);
+
+                                //creatures cant make multiple babies in the same iteration
+                                female.fertile = false;
+                                male.fertile = false;
+                            }
+                }
+                foreach (Creature gal in newF)
+                {
+                    females.Add(gal);
+                    population.Add(gal);
+                }
+                foreach (Creature ew in newM)
+                {
+                    males.Add(ew);
+                    population.Add(ew);
+                }
+
+
+                foreach (Creature creature in population)
+                {
+                    creature.RelationsUpdate();
+                }
+
+                phaseCount--;
+                //print state to file youre working on
+                PrintResults(file);
             }
-
-
-            List<Creature> newM = new List<Creature>();
-            List<Creature> newF = new List<Creature>();
-
-            //make new creatures
-            foreach (Creature female in females)
-            {
-                if (female.fertile)
-                    foreach (Creature male in males)
-                        if (male.fertile)
-                        {
-                            Creature creature = new Creature(female, male, parameters, random);
-                            
-                            //add the creature to all the right lists
-                            if (creature.sex == physicalsex.female)
-                                newF.Add(creature);
-                            else
-                                newM.Add(creature);
-                            male.children.Add(creature);
-                            female.children.Add(creature);
-
-                            //creatures cant make multiple babies in the same iteration
-                            female.fertile = false;
-                            male.fertile = false;
-                        }
-            }
-            foreach (Creature gal in newF)
-            {
-                females.Add(gal);
-                population.Add(gal);
-            }
-            foreach (Creature ew in newM)
-            {
-                males.Add(ew);
-                population.Add(ew);
-            }
-
-
-            foreach (Creature creature in population)
-            {
-                creature.RelationsUpdate();
-            }
-
-            phaseCount--;
-            //print state to file youre working on
-            PrintResults(file);
         }
+        else 
+        {
+            while (phaseCount > 0)
+            {
+                //assign food
+                SimpleAssignFood();
 
-        
+                //run the creature iteration
+                foreach (SimpleCreature creature in simplepopulation)
+                {
+                    //creature phase\
+                    creature.RunIteration();//foodupdate
+
+
+                }
+                //only after all food is handed out, check population. otherwise a creature might die and get handed food afterwards
+                List<SimpleCreature> removedM = new List<SimpleCreature>();
+                List<SimpleCreature> removedF = new List<SimpleCreature>();
+                foreach (SimpleCreature creature in simplepopulation)
+                {
+                    //kills the creatures 
+                    if (creature.Dies())
+                    {
+                        //also remove from list of sex
+                        if (creature.sex == physicalsex.male)
+                        {
+                            removedM.Add(creature);
+                        }
+                        else
+                        {
+                            removedF.Add(creature);
+                        }
+                    }
+                }
+                foreach (SimpleCreature creature in removedM)
+                {
+                    simplepopulation.Remove(creature);
+                    simplemales.Remove(creature);
+                }
+                foreach (SimpleCreature creature in removedF)
+                {
+                    simplepopulation.Remove(creature);
+                    simplefemales.Remove(creature);
+                }
+
+                List<SimpleCreature> newM = new List<SimpleCreature>();
+                List<SimpleCreature> newF = new List<SimpleCreature>();
+
+                //make new creatures
+                foreach (SimpleCreature female in simplefemales)
+                {
+                    if (female.fertile)
+                        foreach (SimpleCreature male in simplemales)
+                            if (male.fertile)
+                            {
+                                SimpleCreature creature = new SimpleCreature(female, male, parameters, random);
+
+                                //add the creature to all the right lists
+                                if (creature.sex == physicalsex.female)
+                                    newF.Add(creature);
+                                else newM.Add(creature);
+
+                                male.children.Add(creature);
+                                female.children.Add(creature);
+
+                                //creatures cant make multiple babies in the same iteration
+                                female.fertile = false;
+                                male.fertile = false;
+                            }
+                }
+                foreach (SimpleCreature gal in newF)
+                {
+                    simplefemales.Add(gal);
+                    simplepopulation.Add(gal);
+                }
+                foreach (SimpleCreature ew in newM)
+                {
+                    simplemales.Add(ew);
+                    simplepopulation.Add(ew);
+                }
+
+
+                foreach (SimpleCreature creature in simplepopulation)
+                {
+                    creature.RelationsUpdate();
+                }
+
+                phaseCount--;
+                //print state to file youre working on
+                PrintResults(file);
+            }
+        }
     }
 
     /// <summary>
@@ -253,10 +391,21 @@ public class Main
     /// </summary>
     public void PrintResults(StreamWriter writer)
     {
-        foreach (Creature creature in population)
+        if (xlinked)
         {
-            writer.Write(creature.ToString());
-            writer.Write(", ");
+            foreach (Creature creature in population)
+            {
+                writer.Write(creature.ToString());
+                writer.Write(", ");
+            }
+        }
+        else
+        {
+            foreach (SimpleCreature creature in simplepopulation)
+            {
+                writer.Write(creature.ToString());
+                writer.Write(", ");
+            }
         }
         writer.Write('\n');
     }
@@ -275,8 +424,26 @@ public class Main
 
             indexes.Add(randomnumber);
 
-            Creature creature = population[randomnumber];
-            creature.gotfood = true;
+            population[randomnumber].gotfood = true;
+        }
+        //foreach index getfood to true
+    }
+
+    public void SimpleAssignFood()
+    {
+        List<int> indexes = new List<int>();
+        //create list of random integers(representing the indexes
+        for (int i = 0; i < parameters.numOfBundles; i++)
+        {
+            int randomnumber = random.Next(simplepopulation.Count());
+            while (indexes.Contains(randomnumber))
+            {
+                randomnumber = random.Next(simplepopulation.Count());
+            }
+
+            indexes.Add(randomnumber);
+
+            simplepopulation[randomnumber].gotfood = true;
         }
         //foreach index getfood to true
     }

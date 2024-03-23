@@ -113,7 +113,7 @@ namespace Kin_Alturism_Model
                 foreach (Creature fam in currentdist)
                 {
                     //if fam considered hungry, food handed out
-                    int x = fam.food;
+                    int x = fam.foodupdate;
                     if (x < parameterlink.hungrybound)
                     {
                         fam.foodupdate = x + parameterlink.foodPerBundle;
@@ -317,7 +317,7 @@ namespace Kin_Alturism_Model
         //creates a creature based on simple parameters
         public Creature(sexgene sex1, int gen1, dominance dom1, sexgene sex2, int gen2, dominance dom2, Parameters parameterlink, Random rand)
         {
-            this.food = 100;
+            this.food = parameterlink.maxfood;
             this.disability = false;
 
             this.gene1 = new gene(gen1, dom1, sex1);
@@ -327,6 +327,31 @@ namespace Kin_Alturism_Model
             this.gotfood = false;
             this.parameterlink = parameterlink;
             this.rand = rand;
+
+            if (sex1 == sex2)
+            {
+                this.sex = physicalsex.female;
+            }
+            else
+            {
+                this.sex = physicalsex.male;
+            }
+
+            if (dom1 == dom2)
+            {
+                this.doubledominance = true;
+                this.phenoaltruism = 69;
+            }
+            else this.doubledominance = false;
+
+            if (dom1 == dominance.dominant)
+            {
+                this.phenoaltruism = gen1;
+            }
+            else
+            {
+                this.phenoaltruism = gen2;
+            }
         }
 
     }
