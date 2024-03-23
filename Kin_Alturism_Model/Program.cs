@@ -111,7 +111,7 @@ public class Main
             //make the fems
             for (int j = 0; j < (total/2); j++)
             {
-                Creature creature = new Creature(sexgene.X, altruism, dominance, sexgene.X, altruism, dominance, parameters);
+                Creature creature = new Creature(sexgene.X, altruism, dominance, sexgene.X, altruism, dominance, parameters, random);
                 population.Add(creature);
                 females.Add(creature);
             }
@@ -119,7 +119,7 @@ public class Main
             //make the mans
             for (int j = (total / 2); j < total; j++)
             {
-                Creature creature = new Creature(sexgene.X, altruism, dominance, sexgene.Y, altruism, dominance, parameters);
+                Creature creature = new Creature(sexgene.X, altruism, dominance, sexgene.Y, altruism, dominance, parameters, random);
                 population.Add(creature);
                 males.Add(creature);
             }
@@ -208,7 +208,7 @@ public class Main
                     foreach (Creature male in males)
                         if (male.fertile)
                         {
-                            Creature creature = new Creature(female, male, parameters);
+                            Creature creature = new Creature(female, male, parameters, random);
                             
                             //add the creature to all the right lists
                             if (creature.sex == physicalsex.female)
