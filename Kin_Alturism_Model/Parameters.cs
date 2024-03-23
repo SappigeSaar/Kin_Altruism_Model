@@ -13,17 +13,17 @@ namespace Kin_Alturism_Model
         public int numOfBundles = 5;
         //amount of food handed to a creature when given food
         //possible values foodPerBundle [1 - 100]
-        public int foodPerBundle = 3;
+        public int foodPerBundle = 10;
 
         //food limit
         //possible values maxfood [0 - 2147483647]
         public int maxfood = 100;
         //at what food value a creature is considered starving
         //possible values hungrybound [0 - 100]
-        public int hungrybound = 10;
+        public int hungrybound = 30;
         //at what rate food decreases per loop
         //possible values hunger [0 - 100]
-        public int hunger = 1;
+        public int hunger = 35;
         //lower bound for reproduction
         //possible values mateBound [0 - maxfood]
         public int mateBound = 60;

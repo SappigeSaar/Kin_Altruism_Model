@@ -100,7 +100,9 @@ namespace Kin_Alturism_Model
         public void Handout()
         {
             //looks at family distance 1
-            List<Creature> currentdist = new List<Creature> { parent1, parent2 };
+            List<Creature> currentdist = new List<Creature>();
+            if(parent1 != null) currentdist.Add(parent1);
+            if(parent2 != null) currentdist.Add(parent2);
             foreach (Creature child in children) currentdist.Add(child);
             bool found = false;
 
