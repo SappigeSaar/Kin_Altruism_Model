@@ -1,4 +1,4 @@
 ﻿3
-numOfBundles 5
+numOfBundles 5, mutationchance 0
 first
-4,6,8,4,10,8
+0,0,0,0,0,0,0,0,0,0,4

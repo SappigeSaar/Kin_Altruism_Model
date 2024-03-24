@@ -10,10 +10,12 @@ using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
 using System.Diagnostics;
 
+int[,] hundos = new int[10, 1000];
+
 Main main;
-for (int i = 0; i < 1; i++)
+for (int i = 0; i < 1000; i++)
 {
-    main = new Main();
+    main = new Main(); //make this take a seed uwu
 }
 
 
@@ -68,6 +70,39 @@ public class Main
         Console.WriteLine("done :3");
         Console.WriteLine("Time spent: " + stopwatch.ElapsedMilliseconds + "ms");
     }
+    public Main(int seed)
+    {
+        xlinked = true;
+
+        Stopwatch stopwatch = new();
+        stopwatch.Start();
+
+        Console.WriteLine("Hello, World!");
+
+        Console.WriteLine("Storm here");
+
+        string me = "EmmaReal?";
+        Console.WriteLine(me);
+
+        //set up seed and timestamp for output file
+
+        //set up random with seed, set up file 
+        random = new Random(seed);
+        string path = "..\\..\\..\\output\\outputWSeed-" + seed.ToString() + ".txt";
+        Stream file = File.Open(path, FileMode.OpenOrCreate);
+        StreamWriter writer = new StreamWriter(file);   
+
+
+        Initialise();
+
+        PrintSetup(writer, seed);
+
+        RunLoop(writer);
+
+        stopwatch.Stop();
+        Console.WriteLine("done :3");
+        Console.WriteLine("Time spent: " + stopwatch.ElapsedMilliseconds + "ms");
+    }
 
     /// <summary>
     /// sets up everything the program needs
@@ -79,7 +114,7 @@ public class Main
         //set up all the creatures
 
         //read the initiattion Parameters from a file
-        StreamReader reader = new StreamReader("..\\..\\..\\initParameters1.txt");
+        StreamReader reader = new StreamReader("..\\..\\..\\initParameters.txt");
 
         string line = reader.ReadLine();
         if (line == "none")
@@ -92,7 +127,7 @@ public class Main
         }
 
         line = reader.ReadLine();
-        string[] p = line.Split(',');
+        string[] p = line.Split(", ");
 
         this.parameters = new(halfwayPoint, p);
 
@@ -151,11 +186,13 @@ public class Main
             for (int altruism = 0; altruism < distribution.Length; altruism++)
             {
                 int total = int.Parse(distribution[altruism]);
+                dominance dom;
+                if (altruism < halfwayPoint) dom = firstHalf; else dom = secondHalf;
 
                 //make the fems
                 for (int j = 0; j < (total / 2); j++)
                 {
-                    SimpleCreature creature = new SimpleCreature(physicalsex.female, altruism, parameters, random);
+                    SimpleCreature creature = new SimpleCreature(physicalsex.female, altruism, dom, parameters, random);
                     simplepopulation.Add(creature);
                     simplefemales.Add(creature);
                 }
@@ -163,7 +200,7 @@ public class Main
                 //make the mans
                 for (int j = (total / 2); j < total; j++)
                 {
-                    SimpleCreature creature = new SimpleCreature(physicalsex.male, altruism, parameters, random);
+                    SimpleCreature creature = new SimpleCreature(physicalsex.male, altruism, dom, parameters, random);
                     simplepopulation.Add(creature);
                     simplemales.Add(creature);
                 }
@@ -456,6 +493,7 @@ public class Main
         //foreach index getfood to true
     }
 }
+
 
 
 public class gene

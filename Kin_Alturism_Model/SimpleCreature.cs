@@ -36,10 +36,31 @@ namespace Kin_Alturism_Model
         //phenotype
         Random rand;
         public physicalsex sex;
-        public int altruism;
+        bool doubledominance;
+        private int phenoaltruism;
         public bool fertile;
         public bool disability;
-        
+
+        int altruism
+        {
+            get
+            {
+                int[] genes = new int[] { gene1val, gene2val };
+                if (doubledominance) return (int)genes[rand.Next(0, 2)];
+                else return phenoaltruism;
+            }
+
+            set
+            {
+                phenoaltruism = value;
+            }
+        }
+
+        //genotype
+        int gene1val;
+        dominance gene1dom;
+        int gene2val;
+        dominance gene2dom;
 
         //returns whether the creature starves
         public bool Dies()
@@ -158,33 +179,87 @@ namespace Kin_Alturism_Model
             int momOrDad = rand.Next(1, 3);
 
             this.disability = disabled;
-            this.food = 100;
+            this.food = 50;
 
             //sets parents
             this.parent1 = mommy;
             this.parent2 = daddy;
             int daddygene = rand.Next(1, 3);
+            int mommygene = rand.Next(1, 3);
             //copy genes
-            if (momOrDad == 1)
+            if (mommygene == 1)
             {
-                this.altruism = mommy.altruism;
+                this.gene1val = mommy.gene1val;
             }
             else
             {
-                this.altruism = daddy.altruism;
+                this.gene1val = mommy.gene2val;
             }
-            
+            if (daddygene == 1)
+            {
+                this.gene2val = daddy.gene1val;
+            }
+            else
+            {
+                this.gene2val = daddy.gene2val;
+            }
 
             //mutate
             if (mutated)
             {
-                if (mutationDirection == 1)
+                if (momOrDad == 1)
                 {
-                    this.altruism -= 1;
+                    if (mutationDirection == 1)
+                    {
+                        if ((gene1val >= parameterlink.altruismHalfwayPoint && gene1val + 1 >= parameterlink.altruismHalfwayPoint) || (gene1val < parameterlink.altruismHalfwayPoint && gene1val + 1 < parameterlink.altruismHalfwayPoint))
+                        {
+                        }
+                        else
+                        {
+                            if (gene1dom == dominance.dominant) gene1dom = dominance.recessive;
+                            else gene1dom = dominance.dominant;
+                        }
+                        gene1val += 1;
+                    }
+                    else
+                    {
+                        if ((gene1val >= parameterlink.altruismHalfwayPoint && gene1val - 1 >= parameterlink.altruismHalfwayPoint) || (gene1val < parameterlink.altruismHalfwayPoint && gene1val - 1 < parameterlink.altruismHalfwayPoint))
+                        {
+                        }
+                        else
+                        {
+                            if (gene1dom == dominance.dominant) gene1dom = dominance.recessive;
+                            else gene1dom = dominance.dominant;
+                        }
+                        gene1val -= 1;
+                    }
                 }
                 else
                 {
-                    this.altruism += 1;
+                    if (mutationDirection == 1)
+                    {
+                        if ((gene2val >= parameterlink.altruismHalfwayPoint && gene2val + 1 >= parameterlink.altruismHalfwayPoint) || (gene2val < parameterlink.altruismHalfwayPoint && gene2val + 1 < parameterlink.altruismHalfwayPoint))
+                        {
+                        }
+                        else
+                        {
+                            if (gene2dom == dominance.dominant) gene2dom = dominance.recessive;
+                            else gene2dom = dominance.dominant;
+                        }
+                        gene2val += 1;
+                    }
+                    else
+                    {
+                        if ((gene2val >= parameterlink.altruismHalfwayPoint && gene2val - 1 >= parameterlink.altruismHalfwayPoint) || (gene2val < parameterlink.altruismHalfwayPoint && gene2val - 1 < parameterlink.altruismHalfwayPoint))
+                        {
+                        }
+                        else
+                        {
+                            if (gene2dom == dominance.dominant) gene2dom = dominance.recessive;
+                            else gene2dom = dominance.dominant;
+                        }
+                        gene2val -= 1;
+                    }
                 }
             }
 
@@ -208,12 +283,20 @@ namespace Kin_Alturism_Model
         }
 
         //creates a creature based on simple parameters
-        public SimpleCreature(physicalsex sex, int altruism, Parameters parameterlink, Random rand)
+        public SimpleCreature(physicalsex sex, int altruism, dominance dom, Parameters parameterlink, Random rand)
         {
             this.sex = sex;
             this.altruism = altruism;
             this.food = parameterlink.maxfood;
             this.disability = false;
+
+            this.doubledominance = true;
+            this.gene1val = altruism;
+            this.gene2val = altruism;
+            this.gene1dom = dom;
+            this.gene2dom = dom;
+            this.altruism = altruism;
+            
 
             this.children = new List<SimpleCreature>();
             this.fertile = false;
