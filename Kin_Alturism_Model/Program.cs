@@ -8,8 +8,15 @@ using System.Runtime.InteropServices;
 using System;
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
+using System.Diagnostics;
 
-Main main = new Main();
+Main main;
+for (int i = 0; i < 1; i++)
+{
+    main = new Main();
+}
+
+
 public class Main
 {
     Parameters parameters;
@@ -28,6 +35,9 @@ public class Main
     public Main()
     {
         xlinked = true;
+
+        Stopwatch stopwatch = new();
+        stopwatch.Start();
 
         Console.WriteLine("Hello, World!");
 
@@ -54,8 +64,9 @@ public class Main
 
         RunLoop(writer);
 
-
+        stopwatch.Stop();
         Console.WriteLine("done :3");
+        Console.WriteLine("Time spent: " + stopwatch.ElapsedMilliseconds + "ms");
     }
 
     /// <summary>
@@ -189,7 +200,7 @@ public class Main
         streamWriter.Write(", first half = " + first);
         streamWriter.Write(", halfway point = " + halfwayPoint);
         streamWriter.Write(", selfish bonus = " + parameters.selfishBonus);
-        streamWriter.Write(", gain from bonus = " + parameters.bonusGain);
+        streamWriter.Write(", gain from bonus = " + parameters.bonusGain + "\n");
     }
     /// <summary>
     /// runs the program itself

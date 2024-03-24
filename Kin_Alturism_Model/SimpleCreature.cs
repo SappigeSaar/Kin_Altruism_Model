@@ -104,6 +104,7 @@ namespace Kin_Alturism_Model
                     if (x < parameterlink.hungrybound)
                     {
                         fam.foodupdate = x + parameterlink.foodPerBundle;
+                        if (parameterlink.selfishBonus >= rand.Next(1, 101)) foodupdate += parameterlink.bonusGain;
                         found = true;
                         break;
                     }

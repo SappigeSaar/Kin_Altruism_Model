@@ -118,6 +118,7 @@ namespace Kin_Alturism_Model
                     if (x < parameterlink.hungrybound)
                     {
                         fam.foodupdate = x + parameterlink.foodPerBundle;
+                        if(parameterlink.selfishBonus >= rand.Next(1, 101)) foodupdate += parameterlink.bonusGain;
                         found = true;
                         break;
                     }
@@ -171,7 +172,7 @@ namespace Kin_Alturism_Model
             int momOrDad = rand.Next(1, 3);
 
             this.disability = disabled;
-            this.food = 100;
+            this.food = 50;
 
             //sets parents
             this.parent1 = mommy;

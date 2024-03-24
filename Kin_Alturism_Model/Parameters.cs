@@ -13,7 +13,7 @@ namespace Kin_Alturism_Model
         public int numOfBundles = 5;
         //amount of food handed to a creature when given food
         //possible values foodPerBundle [1 - 100]
-        public int foodPerBundle = 10;
+        public int foodPerBundle = 100;
 
         //food limit
         //possible values maxfood [0 - 2147483647]
@@ -23,7 +23,7 @@ namespace Kin_Alturism_Model
         public int hungrybound = 40;
         //at what rate food decreases per loop
         //possible values hunger [0 - 100]
-        public int hunger = 15;
+        public int hunger = 10;
         //lower bound for reproduction
         //possible values mateBound [0 - maxfood]
         public int mateBound = 60;
@@ -41,10 +41,10 @@ namespace Kin_Alturism_Model
 
         //chance of selfish altruism bonus
         //possible values selfishBonus [0 - 100]
-        public int selfishBonus = 0;
+        public int selfishBonus = 100;
         //amount of food gained from altruism bonus
         //possible values bonusGain [0 - maxfood]
-        public int bonusGain = 0;
+        public int bonusGain = 100;
 
         public Parameters(int halfwaypoint, string[] parameters)
         {
