@@ -1,2 +1,2 @@
-# Kin Alturism Model
+# Kin Altruism Model
 - Emma and Storm
