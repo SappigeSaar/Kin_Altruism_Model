@@ -10,7 +10,50 @@ using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
 using System.Diagnostics;
 
-Main main = new Main();
+float[][][] insanelyMuchData = new float[10][][];
+int[] seeds = new int[1000];
+Random seedgenerator = new Random();
+for (int i = 0; i < 1000; i++)
+{
+    seeds[i] = seedgenerator.Next();
+}
+
+for (int allele = 0; allele < 10; allele++)
+{
+    insanelyMuchData[allele] = new float[1000][];
+    for(int seedNo = 0;seedNo < 1000; seedNo++)
+    {
+        insanelyMuchData[allele][seedNo] = new float[1001];
+    }
+}
+Console.WriteLine("Starting Calcs");
+MainButFinalGraph main = new(seeds, insanelyMuchData);
+Console.WriteLine("Done Saving Calcs");
+Console.WriteLine("Writing Save Data to File");
+
+for (int allele = 0; allele < 10; allele++)
+{
+    string path = "..\\..\\..\\output\\finalGraphAllele" + allele.ToString() + ".txt";
+    Stream file = File.Open(path, FileMode.OpenOrCreate);
+    StreamWriter writer = new StreamWriter(file);
+
+    writer.WriteLine("Results for allele " + allele.ToString() + ":");
+
+    for (int seedNo = 0;seedNo < 1000; seedNo++)
+    {
+        writer.Write("Seed " + seeds[seedNo] + ", ");
+        for(int increment = 0; increment < 1001; increment++)
+        {
+            writer.Write(insanelyMuchData[allele][seedNo][increment].ToString() + ", ");
+        }
+        writer.Write("\n");
+    }
+    writer.Close();
+    Console.WriteLine("Finished Writing Allele " + allele.ToString());
+}
+//now print that shit hsghds uhm
+
+
 
 public class Main
 {
@@ -120,7 +163,7 @@ public class Main
         }
 
         line = reader.ReadLine();
-        string[] p = line.Split(", ");
+        string[] p = line.Split(",");
 
         this.parameters = new(halfwayPoint, p);
 

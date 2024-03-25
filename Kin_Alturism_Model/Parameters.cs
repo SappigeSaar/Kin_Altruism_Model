@@ -21,6 +21,10 @@ namespace Kin_Alturism_Model
         //at what food value a creature is considered starving
         //possible values hungrybound [0 - 100]
         public int hungrybound = 40;
+
+        //starting food of offspring
+        public int startingFood = 50;
+
         //at what rate food decreases per loop
         //possible values hunger [0 - 100]
         public int hunger = 10;
@@ -89,7 +93,9 @@ namespace Kin_Alturism_Model
                         case ("bonusGain"):
                             this.bonusGain = value;
                             break;
-
+                        case ("startingFood"):
+                            this.startingFood = value;
+                            break;
                     }
                 }
         }

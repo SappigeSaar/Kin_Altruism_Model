@@ -51,8 +51,8 @@ namespace Kin_Alturism_Model
         }
 
         //genotype
-        gene gene1;
-        gene gene2;
+        public gene gene1;
+        public gene gene2;
 
         //returns whether the creature starves
         public bool Dies()
@@ -171,7 +171,7 @@ namespace Kin_Alturism_Model
             int momOrDad = rand.Next(1, 3);
 
             this.disability = disabled;
-            this.food = 50;
+            this.food = parameterlink.startingFood;
 
             //sets parents
             this.parent1 = mommy;
@@ -205,54 +205,82 @@ namespace Kin_Alturism_Model
                     {
                         if (mutationDirection == 1)
                         {
-                            if ((gene1.altruism >= parameterlink.altruismHalfwayPoint && gene1.altruism + 1 >= parameterlink.altruismHalfwayPoint) || (gene1.altruism < parameterlink.altruismHalfwayPoint && gene1.altruism + 1 < parameterlink.altruismHalfwayPoint))
+                            if(gene1.altruism == 10)
                             {
+
                             }
                             else
                             {
-                                if (gene1.dom == dominance.dominant) gene1.dom = dominance.recessive;
-                                else gene1.dom = dominance.dominant;
+                                if ((gene1.altruism >= parameterlink.altruismHalfwayPoint && gene1.altruism + 1 >= parameterlink.altruismHalfwayPoint) || (gene1.altruism < parameterlink.altruismHalfwayPoint && gene1.altruism + 1 < parameterlink.altruismHalfwayPoint))
+                                {
+                                }
+                                else
+                                {
+                                    if (gene1.dom == dominance.dominant) gene1.dom = dominance.recessive;
+                                    else gene1.dom = dominance.dominant;
+                                }
+                                gene1.altruism += 1;
                             }
-                            gene1.altruism += 1;
                         }
                         else
                         {
-                            if ((gene1.altruism >= parameterlink.altruismHalfwayPoint && gene1.altruism - 1 >= parameterlink.altruismHalfwayPoint) || (gene1.altruism < parameterlink.altruismHalfwayPoint && gene1.altruism - 1 < parameterlink.altruismHalfwayPoint))
+                            if (gene1.altruism == 0)
                             {
+
                             }
                             else
                             {
-                                if (gene1.dom == dominance.dominant) gene1.dom = dominance.recessive;
-                                else gene1.dom = dominance.dominant;
+                                if ((gene1.altruism >= parameterlink.altruismHalfwayPoint && gene1.altruism - 1 >= parameterlink.altruismHalfwayPoint) || (gene1.altruism < parameterlink.altruismHalfwayPoint && gene1.altruism - 1 < parameterlink.altruismHalfwayPoint))
+                                {
+                                }
+                                else
+                                {
+                                    if (gene1.dom == dominance.dominant) gene1.dom = dominance.recessive;
+                                    else gene1.dom = dominance.dominant;
+                                }
+                                gene1.altruism -= 1;
                             }
-                            gene1.altruism -= 1;
                         }
                     }
                     else
                     {
                         if (mutationDirection == 1)
                         {
-                            if ((gene2.altruism >= parameterlink.altruismHalfwayPoint && gene2.altruism + 1 >= parameterlink.altruismHalfwayPoint) || (gene2.altruism < parameterlink.altruismHalfwayPoint && gene2.altruism + 1 < parameterlink.altruismHalfwayPoint))
+                            if (gene2.altruism == 10)
                             {
+
                             }
                             else
                             {
-                                if (gene2.dom == dominance.dominant) gene2.dom = dominance.recessive;
-                                else gene2.dom = dominance.dominant;
+                                if ((gene2.altruism >= parameterlink.altruismHalfwayPoint && gene2.altruism + 1 >= parameterlink.altruismHalfwayPoint) || (gene2.altruism < parameterlink.altruismHalfwayPoint && gene2.altruism + 1 < parameterlink.altruismHalfwayPoint))
+                                {
+                                }
+                                else
+                                {
+                                    if (gene2.dom == dominance.dominant) gene2.dom = dominance.recessive;
+                                    else gene2.dom = dominance.dominant;
+                                }
+                                gene2.altruism += 1;
                             }
-                            gene2.altruism += 1;
                         }
                         else
                         {
-                            if ((gene2.altruism >= parameterlink.altruismHalfwayPoint && gene2.altruism - 1 >= parameterlink.altruismHalfwayPoint) || (gene2.altruism < parameterlink.altruismHalfwayPoint && gene2.altruism - 1 < parameterlink.altruismHalfwayPoint))
+                            if (gene2.altruism == 0)
                             {
+
                             }
                             else
                             {
-                                if (gene2.dom == dominance.dominant) gene2.dom = dominance.recessive;
-                                else gene2.dom = dominance.dominant;
+                                if ((gene2.altruism >= parameterlink.altruismHalfwayPoint && gene2.altruism - 1 >= parameterlink.altruismHalfwayPoint) || (gene2.altruism < parameterlink.altruismHalfwayPoint && gene2.altruism - 1 < parameterlink.altruismHalfwayPoint))
+                                {
+                                }
+                                else
+                                {
+                                    if (gene2.dom == dominance.dominant) gene2.dom = dominance.recessive;
+                                    else gene2.dom = dominance.dominant;
+                                }
+                                gene2.altruism -= 1;
                             }
-                            gene2.altruism -= 1;
                         }
                     }
                 }
