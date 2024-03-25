@@ -25,8 +25,6 @@ namespace Kin_Alturism_Model
         public MainButPopulationOutput(int[]seeds, int[][] hundos, int testedAllele)
         {
             this.xlinked = false;
-            Stopwatch stopwatch = new();
-            stopwatch.Start();
 
             //do it fucken like, 1000 times
 
@@ -44,10 +42,6 @@ namespace Kin_Alturism_Model
                 Initialise(testedAllele);
                 RunLoop(hundos[i]);
             }
-
-            stopwatch.Stop();
-            Console.WriteLine("done :3");
-            Console.WriteLine("Time spent: " + stopwatch.ElapsedMilliseconds + "ms");
         }
 
         /// <summary>
