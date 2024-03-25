@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Kin_Alturism_Model
 {
-    public class Creature
+    public class XlinkedCreature
     {
         Parameters parameterlink;
         //parents and list of childern
-        Creature? parent1;
-        Creature? parent2;
-        public List<Creature> children;
+        XlinkedCreature? parent1;
+        XlinkedCreature? parent2;
+        public List<XlinkedCreature> children;
 
         //amount of food it has and if it got food this loop
         private int food;
@@ -72,9 +72,9 @@ namespace Kin_Alturism_Model
         {
             if (parent1 != null) if (parent1.Dies()) parent1 = null;
             if (parent2 != null) if (parent2.Dies()) parent2 = null;
-            List<Creature> removedC = new List<Creature>();
-            foreach (Creature child in children) if (child.Dies()) removedC.Add(child);
-            foreach (Creature child in removedC) children.Remove(child);
+            List<XlinkedCreature> removedC = new List<XlinkedCreature>();
+            foreach (XlinkedCreature child in children) if (child.Dies()) removedC.Add(child);
+            foreach (XlinkedCreature child in removedC) children.Remove(child);
         }
 
         /// <summary>
@@ -98,10 +98,10 @@ namespace Kin_Alturism_Model
         public void Handout()
         {
             //looks at family distance 1
-            List<Creature> currentdist = new List<Creature>();
+            List<XlinkedCreature> currentdist = new List<XlinkedCreature>();
             if(parent1 != null) currentdist.Add(parent1);
             if(parent2 != null) currentdist.Add(parent2);
-            foreach (Creature child in children) currentdist.Add(child);
+            foreach (XlinkedCreature child in children) currentdist.Add(child);
             bool found = false;
 
             //loops 
@@ -109,8 +109,8 @@ namespace Kin_Alturism_Model
             {
                 //only hands out once
                 if (found) break;
-                HashSet<Creature> nexthash = new HashSet<Creature>();
-                foreach (Creature fam in currentdist)
+                HashSet<XlinkedCreature> nexthash = new HashSet<XlinkedCreature>();
+                foreach (XlinkedCreature fam in currentdist)
                 {
                     //if fam considered hungry, food handed out
                     int x = fam.foodupdate;
@@ -148,20 +148,20 @@ namespace Kin_Alturism_Model
         }
 
         //returns hashset of related creatures
-        public HashSet<Creature> related
+        public HashSet<XlinkedCreature> related
         {
             get
             {
-                HashSet<Creature> found = new HashSet<Creature>();
+                HashSet<XlinkedCreature> found = new HashSet<XlinkedCreature>();
                 if (parent1 != null) found.Add(parent1);
                 if (parent2 != null) found.Add(parent2);
-                foreach (Creature child in children) found.Add(child);
+                foreach (XlinkedCreature child in children) found.Add(child);
                 return found;
             }
         }
 
         //creates a new creature based on two parents
-        public Creature(Creature mommy, Creature daddy, Parameters parameterlink, Random rand)
+        public XlinkedCreature(XlinkedCreature mommy, XlinkedCreature daddy, Parameters parameterlink, Random rand)
         {
             //random number to see if mutated, mutation + (1) or - (2), mom (1) or dad (2) gene mutation, disabled, mommygene, daddygene,
             this.rand = rand;
@@ -349,21 +349,21 @@ namespace Kin_Alturism_Model
 
 
 
-            this.children = new List<Creature>();
+            this.children = new List<XlinkedCreature>();
             this.fertile = false;
             this.gotfood = false;
             this.parameterlink = parameterlink;
         }
 
         //creates a creature based on simple parameters
-        public Creature(sexgene sex1, int gen1, dominance dom1, sexgene sex2, int gen2, dominance dom2, Parameters parameterlink, Random rand)
+        public XlinkedCreature(sexgene sex1, int gen1, dominance dom1, sexgene sex2, int gen2, dominance dom2, Parameters parameterlink, Random rand)
         {
             this.food = parameterlink.maxfood;
             this.disability = false;
 
             this.gene1 = new gene(gen1, dom1, sex1);
             this.gene2 = new gene(gen2, dom2, sex2);
-            this.children = new List<Creature>();
+            this.children = new List<XlinkedCreature>();
             this.fertile = false;
             this.gotfood = false;
             this.parameterlink = parameterlink;

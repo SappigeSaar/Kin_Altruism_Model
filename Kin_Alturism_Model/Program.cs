@@ -10,23 +10,16 @@ using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
 using System.Diagnostics;
 
-int[,] hundos = new int[10, 1000];
-
-Main main;
-for (int i = 0; i < 1000; i++)
-{
-    main = new Main(); //make this take a seed uwu
-}
-
+Main main = new Main();
 
 public class Main
 {
     Parameters parameters;
-    List<Creature> population = new List<Creature>();
+    List<XlinkedCreature> population = new List<XlinkedCreature>();
     List<SimpleCreature> simplepopulation = new List<SimpleCreature>();
-    List<Creature> males = new List<Creature>();
+    List<XlinkedCreature> males = new List<XlinkedCreature>();
     List<SimpleCreature> simplemales = new List<SimpleCreature>();
-    List<Creature> females = new List<Creature>();
+    List<XlinkedCreature> females = new List<XlinkedCreature>();
     List<SimpleCreature> simplefemales = new List<SimpleCreature>();
 
     Random random;
@@ -167,7 +160,7 @@ public class Main
                 //make the fems
                 for (int j = 0; j < (total / 2); j++)
                 {
-                    Creature creature = new Creature(sexgene.X, altruism, dominance, sexgene.X, altruism, dominance, parameters, random);
+                    XlinkedCreature creature = new XlinkedCreature(sexgene.X, altruism, dominance, sexgene.X, altruism, dominance, parameters, random);
                     population.Add(creature);
                     females.Add(creature);
                 }
@@ -175,7 +168,7 @@ public class Main
                 //make the mans
                 for (int j = (total / 2); j < total; j++)
                 {
-                    Creature creature = new Creature(sexgene.X, altruism, dominance, sexgene.Y, altruism, dominance, parameters, random);
+                    XlinkedCreature creature = new XlinkedCreature(sexgene.X, altruism, dominance, sexgene.Y, altruism, dominance, parameters, random);
                     population.Add(creature);
                     males.Add(creature);
                 }
@@ -254,7 +247,7 @@ public class Main
                 AssignFood();
 
                 //run the creature iteration
-                foreach (Creature creature in population)
+                foreach (XlinkedCreature creature in population)
                 {
                     //creature phase\
                     creature.RunIteration();//foodupdate
@@ -262,10 +255,10 @@ public class Main
 
                 }
                 //only after all food is handed out, check population. otherwise a creature might die and get handed food afterwards
-                List<Creature> removedM = new List<Creature>();
-                List<Creature> removedF = new List<Creature>();
+                List<XlinkedCreature> removedM = new List<XlinkedCreature>();
+                List<XlinkedCreature> removedF = new List<XlinkedCreature>();
 
-                foreach (Creature creature in population)
+                foreach (XlinkedCreature creature in population)
                 {
                     //kills the creatures 
                     if (creature.Dies())
@@ -279,32 +272,32 @@ public class Main
                         {
                             removedF.Add(creature);
                         }
-                        foreach(Creature related in creature.related.ToList()) { related.RelationsUpdate(); }
+                        foreach(XlinkedCreature related in creature.related.ToList()) { related.RelationsUpdate(); }
                     }
                 }
-                foreach (Creature creature in removedM)
+                foreach (XlinkedCreature creature in removedM)
                 {
                     population.Remove(creature);
                     males.Remove(creature);
                 }
-                foreach (Creature creature in removedF)
+                foreach (XlinkedCreature creature in removedF)
                 {
                     population.Remove(creature);
                     females.Remove(creature);
                 }
 
 
-                List<Creature> newM = new List<Creature>();
-                List<Creature> newF = new List<Creature>();
+                List<XlinkedCreature> newM = new List<XlinkedCreature>();
+                List<XlinkedCreature> newF = new List<XlinkedCreature>();
 
                 //make new creatures
-                foreach (Creature female in females)
+                foreach (XlinkedCreature female in females)
                 {
                     if (female.fertile)
-                        foreach (Creature male in males)
+                        foreach (XlinkedCreature male in males)
                             if (male.fertile)
                             {
-                                Creature creature = new Creature(female, male, parameters, random);
+                                XlinkedCreature creature = new XlinkedCreature(female, male, parameters, random);
 
                                 //add the creature to all the right lists
                                 if (creature.sex == physicalsex.female)
@@ -319,12 +312,12 @@ public class Main
                                 male.fertile = false;
                             }
                 }
-                foreach (Creature gal in newF)
+                foreach (XlinkedCreature gal in newF)
                 {
                     females.Add(gal);
                     population.Add(gal);
                 }
-                foreach (Creature ew in newM)
+                foreach (XlinkedCreature ew in newM)
                 {
                     males.Add(ew);
                     population.Add(ew);
@@ -438,7 +431,7 @@ public class Main
     {
         if (xlinked)
         {
-            foreach (Creature creature in population)
+            foreach (XlinkedCreature creature in population)
             {
                 writer.Write(creature.ToString());
                 writer.Write(", ");
