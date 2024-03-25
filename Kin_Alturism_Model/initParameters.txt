@@ -1,4 +1,4 @@
-﻿3
+﻿5
 numOfBundles 5,mutationChance 3
 first
 2,2,2,2,2,2,2,2,2,2,2

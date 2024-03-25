@@ -22,7 +22,7 @@ namespace Kin_Alturism_Model
         int halfwayPoint;
         bool firstHalf;
 
-        public MainButFinalGraph(int[] seeds, float[][][] largeAssBullshit)
+        public MainButFinalGraph(int[] seeds, double[][][] largeAssBullshit)
         {                                     //allele, seed, increment (10, 1000, 1001)
             this.xlinked = false;
             Stopwatch stopwatch = new();
@@ -156,7 +156,7 @@ namespace Kin_Alturism_Model
         /// <summary>
         /// runs the program itself
         /// </summary>
-        public void RunLoop(float[][][] tenmilliondatapoints, int seedNo)
+        public void RunLoop(double[][][] tenmilliondatapoints, int seedNo)
         {
             int phaseCount = 1000;
 
@@ -168,7 +168,7 @@ namespace Kin_Alturism_Model
                     //print population for each allele 0 to 10
                     for (int i = 0; i < 11; i++)
                     {
-                        int populationpercent = population.FindAll(x => x.gene1.altruism == i || x.gene2.altruism == i).Count / populationTotal;
+                        double populationpercent = (double)100 * (double)population.FindAll(x => x.gene1.altruism == i || x.gene2.altruism == i).Count / (double)populationTotal;
                         tenmilliondatapoints[i][seedNo][phaseCounter] = populationpercent;
                     }
                     //assign food
@@ -263,7 +263,7 @@ namespace Kin_Alturism_Model
                     //print population for each allele 0 to 10
                     for (int i = 0; i < 11; i++)
                     {
-                        int populationpercent = simplepopulation.FindAll(x => x.gene1val == i || x.gene2val == i).Count / populationTotal;
+                        double populationpercent = (double)100 * (double)simplepopulation.FindAll(x => x.gene1val == i || x.gene2val == i).Count / (double)populationTotal;
                         tenmilliondatapoints[i][seedNo][phaseCounter] = populationpercent;
                     }
                     //assign food
@@ -272,7 +272,7 @@ namespace Kin_Alturism_Model
                     //run the creature iteration
                     foreach (SimpleCreature creature in simplepopulation)
                     {
-                        //creature phase\
+                        //creature phase
                         creature.RunIteration();//foodupdate
 
 

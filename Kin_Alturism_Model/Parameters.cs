@@ -48,7 +48,7 @@ namespace Kin_Alturism_Model
         public int selfishBonus = 100;
         //amount of food gained from altruism bonus
         //possible values bonusGain [0 - maxfood]
-        public int bonusGain = 100;
+        public int bonusGain = 50;
 
         public Parameters(int halfwaypoint, string[] parameters)
         {

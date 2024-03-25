@@ -10,7 +10,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
 using System.Diagnostics;
 
-float[][][] insanelyMuchData = new float[11][][];
+double[][][] insanelyMuchData = new double[11][][];
 int[] seeds = new int[1000];
 Random seedgenerator = new Random();
 for (int i = 0; i < 1000; i++)
@@ -20,10 +20,10 @@ for (int i = 0; i < 1000; i++)
 
 for (int allele = 0; allele < 11; allele++)
 {
-    insanelyMuchData[allele] = new float[1000][];
+    insanelyMuchData[allele] = new double[1000][];
     for(int seedNo = 0;seedNo < 1000; seedNo++)
     {
-        insanelyMuchData[allele][seedNo] = new float[1001];
+        insanelyMuchData[allele][seedNo] = new double[1001];
     }
 }
 Console.WriteLine("Starting Calcs");
@@ -41,10 +41,10 @@ for (int allele = 0; allele < 11; allele++)
 
     for (int seedNo = 0;seedNo < 1000; seedNo++)
     {
-        writer.Write("Seed " + seeds[seedNo] + ", ");
+        writer.Write("Seed " + seeds[seedNo]);
         for(int increment = 0; increment < 1001; increment++)
         {
-            writer.Write(insanelyMuchData[allele][seedNo][increment].ToString() + ", ");
+            writer.Write(", " + insanelyMuchData[allele][seedNo][increment].ToString());
         }
         writer.Write("\n");
     }
