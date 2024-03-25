@@ -63,16 +63,9 @@ namespace Kin_Alturism_Model
             StreamReader reader = new StreamReader("..\\..\\..\\initParameters.txt");
 
             string line = reader.ReadLine();
-            if (line == "none")
-            {
-                xlinked = false;
-            }
-            else
-            {
-                this.halfwayPoint = int.Parse(line);
-            }
+            this.halfwayPoint = int.Parse(line);
 
-            line = reader.ReadLine();
+            line = reader.ReadLine();   
             string[] p = line.Split(", ");
 
             this.parameters = new(halfwayPoint, p);
@@ -97,7 +90,6 @@ namespace Kin_Alturism_Model
 
 
             line = reader.ReadLine();
-            string[] distribution = line.Split(',');
             if (xlinked)
             {
                 dominance dominance;
@@ -126,28 +118,28 @@ namespace Kin_Alturism_Model
             }
             else
             {
+                dominance dominance;
+                if (allele < halfwayPoint)
+                    dominance = firstHalf;
+                else
+                    dominance = secondHalf;
 
-                for (int altruism = 0; allele < distribution.Length; allele++)
+                int total = 4;
+
+                //make the fems
+                for (int j = 0; j < (total / 2); j++)
                 {
-                    dominance dom;
-                    if (allele < halfwayPoint) dom = firstHalf; else dom = secondHalf;
-                    int total = int.Parse(distribution[allele]);
+                    SimpleCreature creature = new SimpleCreature(physicalsex.female, allele, dominance, parameters, random);
+                    simplepopulation.Add(creature);
+                    simplefemales.Add(creature);
+                }
 
-                    //make the fems
-                    for (int j = 0; j < (total / 2); j++)
-                    {
-                        SimpleCreature creature = new SimpleCreature(physicalsex.female, allele, dom, parameters, random);
-                        simplepopulation.Add(creature);
-                        simplefemales.Add(creature);
-                    }
-
-                    //make the mans
-                    for (int j = (total / 2); j < total; j++)
-                    {
-                        SimpleCreature creature = new SimpleCreature(physicalsex.male, allele, dom, parameters, random);
-                        simplepopulation.Add(creature);
-                        simplemales.Add(creature);
-                    }
+                //make the mans
+                for (int j = (total / 2); j < total; j++)
+                {
+                    SimpleCreature creature = new SimpleCreature(physicalsex.male, allele, dominance, parameters, random);
+                    simplepopulation.Add(creature);
+                    simplemales.Add(creature);
                 }
             }
             reader.Close();
@@ -341,30 +333,6 @@ namespace Kin_Alturism_Model
                     hundos[i] = simplepopulation.Count;
                 }
             }
-        }
-
-        /// <summary>
-        /// put the results og the run into a file
-        /// </summary>
-        public void PrintResults(StreamWriter writer)
-        {
-            if (xlinked)
-            {
-                foreach (Creature creature in population)
-                {
-                    writer.Write(creature.ToString());
-                    writer.Write(", ");
-                }
-            }
-            else
-            {
-                foreach (SimpleCreature creature in simplepopulation)
-                {
-                    writer.Write(creature.ToString());
-                    writer.Write(", ");
-                }
-            }
-            writer.Write('\n');
         }
 
         public void AssignFood()

@@ -383,14 +383,14 @@ namespace Kin_Alturism_Model
                 this.doubledominance = true;
                 this.phenoaltruism = 69;
             }
-            else this.doubledominance = false;
-
-            if (dom1 == dominance.dominant)
+            else if (dom1 == dominance.dominant)
             {
+                this.doubledominance = false;
                 this.phenoaltruism = gen1;
             }
             else
             {
+                this.doubledominance = false;
                 this.phenoaltruism = gen2;
             }
         }

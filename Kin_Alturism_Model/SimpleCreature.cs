@@ -80,10 +80,9 @@ namespace Kin_Alturism_Model
         {
             if (parent1 != null) if (parent1.Dies()) parent1 = null;
             if (parent2 != null) if (parent2.Dies()) parent2 = null;
-            foreach (SimpleCreature child in children)
-            {
-                if (child.Dies()) children.Remove(child);
-            }
+            List<SimpleCreature> removedC = new List<SimpleCreature>();
+            foreach (SimpleCreature child in children) if (child.Dies()) removedC.Add(child);
+            foreach (SimpleCreature child in removedC) children.Remove(child);
         }
 
         /// <summary>
@@ -108,7 +107,9 @@ namespace Kin_Alturism_Model
         public void Handout()
         {
             //looks at family distance 1
-            List<SimpleCreature> currentdist = new List<SimpleCreature> { parent1, parent2 };
+            List<SimpleCreature> currentdist = new List<SimpleCreature>();
+            if (parent1 != null) currentdist.Add(parent1);
+            if (parent2 != null) currentdist.Add(parent2);
             foreach (SimpleCreature child in children) currentdist.Add(child);
             bool found = false;
 
@@ -173,8 +174,8 @@ namespace Kin_Alturism_Model
         {
             //random number to see if mutated, mutation + (1) or - (2), mom (1) or dad (2) gene mutation, disabled, mommygene, daddygene,
             this.rand = rand;
-            bool mutated = rand.Next(1, 101) < parameterlink.mutationChance;
-            bool disabled = rand.Next(1, 101) < parameterlink.disabilityChance;
+            bool mutated = rand.Next(1, 101) <= parameterlink.mutationChance;
+            bool disabled = rand.Next(1, 101) <= parameterlink.disabilityChance;
             int mutationDirection = rand.Next(1, 3);
             int momOrDad = rand.Next(1, 3);
 
@@ -184,8 +185,8 @@ namespace Kin_Alturism_Model
             //sets parents
             this.parent1 = mommy;
             this.parent2 = daddy;
-            int daddygene = rand.Next(1, 3);
             int mommygene = rand.Next(1, 3);
+            int daddygene = rand.Next(1, 3);
             //copy genes
             if (mommygene == 1)
             {
@@ -219,7 +220,7 @@ namespace Kin_Alturism_Model
                             if (gene1dom == dominance.dominant) gene1dom = dominance.recessive;
                             else gene1dom = dominance.dominant;
                         }
-                        gene1val += 1;
+                        this.gene1val += 1;
                     }
                     else
                     {
@@ -231,7 +232,7 @@ namespace Kin_Alturism_Model
                             if (gene1dom == dominance.dominant) gene1dom = dominance.recessive;
                             else gene1dom = dominance.dominant;
                         }
-                        gene1val -= 1;
+                        this.gene1val -= 1;
                     }
                 }
                 else
@@ -246,7 +247,7 @@ namespace Kin_Alturism_Model
                             if (gene2dom == dominance.dominant) gene2dom = dominance.recessive;
                             else gene2dom = dominance.dominant;
                         }
-                        gene2val += 1;
+                        this.gene2val += 1;
                     }
                     else
                     {
@@ -258,7 +259,7 @@ namespace Kin_Alturism_Model
                             if (gene2dom == dominance.dominant) gene2dom = dominance.recessive;
                             else gene2dom = dominance.dominant;
                         }
-                        gene2val -= 1;
+                        this.gene2val -= 1;
                     }
                 }
             }
@@ -273,13 +274,27 @@ namespace Kin_Alturism_Model
                 this.sex = physicalsex.male;
             }
 
-
+            //domfucky?
+            if(gene1dom == gene2dom)
+            {
+                this.doubledominance = true;
+            }else if(gene1dom == dominance.dominant)
+            {
+                this.doubledominance = false;
+                this.phenoaltruism = gene1val;
+            }
+            else
+            {
+                this.doubledominance = false;
+                this.phenoaltruism = gene2val;
+            }
 
 
             this.children = new List<SimpleCreature>();
             this.fertile = false;
             this.gotfood = false;
             this.parameterlink = parameterlink;
+
         }
 
         //creates a creature based on simple parameters
@@ -295,7 +310,6 @@ namespace Kin_Alturism_Model
             this.gene2val = altruism;
             this.gene1dom = dom;
             this.gene2dom = dom;
-            this.altruism = altruism;
             
 
             this.children = new List<SimpleCreature>();
