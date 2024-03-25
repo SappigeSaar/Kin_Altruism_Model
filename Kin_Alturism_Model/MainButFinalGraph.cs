@@ -20,6 +20,7 @@ namespace Kin_Alturism_Model
         Random random;
         bool xlinked;
         int halfwayPoint;
+        bool firstHalf;
 
         public MainButFinalGraph(int[] seeds, float[][][] largeAssBullshit)
         {                                     //allele, seed, increment (10, 1000, 1001)
@@ -155,7 +156,7 @@ namespace Kin_Alturism_Model
         /// <summary>
         /// runs the program itself
         /// </summary>
-        public void RunLoop(int[][][] tenmilliondatapoints, int seedNo)
+        public void RunLoop(float[][][] tenmilliondatapoints, int seedNo)
         {
             int phaseCount = 1000;
 

@@ -10,7 +10,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
 using System.Diagnostics;
 
-float[][][] insanelyMuchData = new float[10][][];
+float[][][] insanelyMuchData = new float[11][][];
 int[] seeds = new int[1000];
 Random seedgenerator = new Random();
 for (int i = 0; i < 1000; i++)
@@ -18,7 +18,7 @@ for (int i = 0; i < 1000; i++)
     seeds[i] = seedgenerator.Next();
 }
 
-for (int allele = 0; allele < 10; allele++)
+for (int allele = 0; allele < 11; allele++)
 {
     insanelyMuchData[allele] = new float[1000][];
     for(int seedNo = 0;seedNo < 1000; seedNo++)
@@ -31,7 +31,7 @@ MainButFinalGraph main = new(seeds, insanelyMuchData);
 Console.WriteLine("Done Saving Calcs");
 Console.WriteLine("Writing Save Data to File");
 
-for (int allele = 0; allele < 10; allele++)
+for (int allele = 0; allele < 11; allele++)
 {
     string path = "..\\..\\..\\output\\finalGraphAllele" + allele.ToString() + ".txt";
     Stream file = File.Open(path, FileMode.OpenOrCreate);
