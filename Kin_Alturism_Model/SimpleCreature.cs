@@ -133,6 +133,7 @@ namespace Kin_Alturism_Model
                     nexthash.UnionWith(fam.related);
                 }
                 //sets list of relatives' relatives to current parsing list
+                nexthash.Remove(this);
                 currentdist = nexthash.ToList();
 
             }
