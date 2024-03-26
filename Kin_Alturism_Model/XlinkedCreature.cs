@@ -315,27 +315,41 @@ namespace Kin_Alturism_Model
                 {
                     if (mutationDirection == 1)
                     {
-                        if ((gene2.altruism >= parameterlink.altruismHalfwayPoint && gene2.altruism + 1 >= parameterlink.altruismHalfwayPoint) || (gene2.altruism < parameterlink.altruismHalfwayPoint && gene2.altruism + 1 < parameterlink.altruismHalfwayPoint))
+                        if (gene2.altruism == 10)
                         {
+
                         }
                         else
                         {
-                            if (gene2.dom == dominance.dominant) gene2.dom = dominance.recessive;
-                            else gene2.dom = dominance.dominant;
+                            if ((gene2.altruism >= parameterlink.altruismHalfwayPoint && gene2.altruism + 1 >= parameterlink.altruismHalfwayPoint) || (gene2.altruism < parameterlink.altruismHalfwayPoint && gene2.altruism + 1 < parameterlink.altruismHalfwayPoint))
+                            {
+                            }
+                            else
+                            {
+                                if (gene2.dom == dominance.dominant) gene2.dom = dominance.recessive;
+                                else gene2.dom = dominance.dominant;
+                            }
+                            gene2.altruism += 1;
                         }
-                        gene2.altruism += 1;
                     }
                     else
                     {
-                        if ((gene2.altruism >= parameterlink.altruismHalfwayPoint && gene2.altruism - 1 >= parameterlink.altruismHalfwayPoint) || (gene2.altruism < parameterlink.altruismHalfwayPoint && gene2.altruism - 1 < parameterlink.altruismHalfwayPoint))
+                        if (gene2.altruism == 0)
                         {
+
                         }
                         else
                         {
-                            if (gene2.dom == dominance.dominant) gene2.dom = dominance.recessive;
-                            else gene2.dom = dominance.dominant;
+                            if ((gene2.altruism >= parameterlink.altruismHalfwayPoint && gene2.altruism - 1 >= parameterlink.altruismHalfwayPoint) || (gene2.altruism < parameterlink.altruismHalfwayPoint && gene2.altruism - 1 < parameterlink.altruismHalfwayPoint))
+                            {
+                            }
+                            else
+                            {
+                                if (gene2.dom == dominance.dominant) gene2.dom = dominance.recessive;
+                                else gene2.dom = dominance.dominant;
+                            }
+                            gene2.altruism -= 1;
                         }
-                        gene2.altruism -= 1;
                     }
                 }
             }
