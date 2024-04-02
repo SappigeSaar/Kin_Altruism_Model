@@ -1,6 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using Kin_Alturism_Model;
+using Kin_Altruism_Model;
 using System.Linq;
 using System.Net.Security;
 using System.Net.Sockets;
@@ -280,7 +280,7 @@ public class Main
     /// </summary>
     public void RunLoop(StreamWriter file)
     {
-        int phaseCount = 1000;
+        int phaseCount = 5000;
 
         if (xlinked)
         {
@@ -292,7 +292,7 @@ public class Main
                 //run the creature iteration
                 foreach (XlinkedCreature creature in population)
                 {
-                    //creature phase\
+                    //creature phase
                     creature.RunIteration();//foodupdate
 
 

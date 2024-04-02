@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kin_Alturism_Model
+namespace Kin_Altruism_Model
 {
     public class SimpleCreature
     {
