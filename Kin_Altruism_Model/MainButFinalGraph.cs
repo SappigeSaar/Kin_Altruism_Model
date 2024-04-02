@@ -22,7 +22,7 @@ namespace Kin_Altruism_Model
         int halfwayPoint;
         bool firstHalf;
 
-        public MainButFinalGraph(int[] seeds, double[][][] largeAssBullshit)
+        public MainButFinalGraph(int[] seeds, int[][][] largeAssBullshit)
         {                                     //allele, seed, increment (10, 1000, 1001)
             this.xlinked = false;
             Stopwatch stopwatch = new();
@@ -156,20 +156,19 @@ namespace Kin_Altruism_Model
         /// <summary>
         /// runs the program itself
         /// </summary>
-        public void RunLoop(double[][][] tenmilliondatapoints, int seedNo)
+        public void RunLoop(int[][][] tenmilliondatapoints, int seedNo)
         {
-            int phaseCount = 1000;
+            int phaseCount = 5000;
 
             if (xlinked)
             {
                 for (int phaseCounter = 0; phaseCounter < 1001; phaseCounter++)
                 {
-                    int populationTotal = population.Count;
                     //print population for each allele 0 to 10
                     for (int i = 0; i < 11; i++)
                     {
-                        double populationpercent = (double)100 * (double)population.FindAll(x => x.gene1.altruism == i || x.gene2.altruism == i).Count / (double)populationTotal;
-                        tenmilliondatapoints[i][seedNo][phaseCounter] = populationpercent;
+                        int amountOfGene = population.FindAll(x => x.gene1.altruism == i).Count + population.FindAll(x => x.gene2.altruism == i).Count;
+                        tenmilliondatapoints[i][seedNo][phaseCounter] = amountOfGene;
                     }
                     //assign food
                     AssignFood();
@@ -263,7 +262,7 @@ namespace Kin_Altruism_Model
                     //print population for each allele 0 to 10
                     for (int i = 0; i < 11; i++)
                     {
-                        double populationpercent = (double)100 * (double)simplepopulation.FindAll(x => x.gene1val == i || x.gene2val == i).Count / (double)populationTotal;
+                        int populationpercent = simplepopulation.FindAll(x => x.gene1val == i ).Count + simplepopulation.FindAll(x => x.gene2val == i).Count;
                         tenmilliondatapoints[i][seedNo][phaseCounter] = populationpercent;
                     }
                     //assign food

@@ -10,7 +10,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
 using System.Diagnostics;
 
-double[][][] insanelyMuchData = new double[11][][];
+int[][][] insanelyMuchData = new int[11][][];
 int[] seeds = new int[1000];
 Random seedgenerator = new Random();
 for (int i = 0; i < 1000; i++)
@@ -20,10 +20,10 @@ for (int i = 0; i < 1000; i++)
 
 for (int allele = 0; allele < 11; allele++)
 {
-    insanelyMuchData[allele] = new double[1000][];
+    insanelyMuchData[allele] = new int[1000][];
     for(int seedNo = 0;seedNo < 1000; seedNo++)
     {
-        insanelyMuchData[allele][seedNo] = new double[1001];
+        insanelyMuchData[allele][seedNo] = new int[5001];
     }
 }
 Console.WriteLine("Starting Calcs");
