@@ -13,17 +13,19 @@ using System.Diagnostics;
 int[][][] insanelyMuchData = new int[11][][];
 int[] seeds = new int[1000];
 Random seedgenerator = new Random();
-for (int i = 0; i < 1000; i++)
+int increments = 5000;
+int simulationTotal = 1000;
+for (int i = 0; i < simulationTotal; i++)
 {
     seeds[i] = seedgenerator.Next();
 }
 
 for (int allele = 0; allele < 11; allele++)
 {
-    insanelyMuchData[allele] = new int[1000][];
-    for(int seedNo = 0;seedNo < 1000; seedNo++)
+    insanelyMuchData[allele] = new int[simulationTotal][];
+    for(int seedNo = 0;seedNo < simulationTotal; seedNo++)
     {
-        insanelyMuchData[allele][seedNo] = new int[5001];
+        insanelyMuchData[allele][seedNo] = new int[increments];
     }
 }
 Console.WriteLine("Starting Calcs");
@@ -39,10 +41,10 @@ for (int allele = 0; allele < 11; allele++)
 
     writer.WriteLine("Results for allele " + allele.ToString() + ":");
 
-    for (int seedNo = 0;seedNo < 1000; seedNo++)
+    for (int seedNo = 0;seedNo < simulationTotal; seedNo++)
     {
         writer.Write("Seed " + seeds[seedNo]);
-        for(int increment = 0; increment < 1001; increment++)
+        for(int increment = 0; increment < increments; increment++)
         {
             writer.Write(", " + insanelyMuchData[allele][seedNo][increment].ToString());
         }
@@ -51,6 +53,42 @@ for (int allele = 0; allele < 11; allele++)
     writer.Close();
     Console.WriteLine("Finished Writing Allele " + allele.ToString());
 }
+
+string avgpath = "..\\..\\..\\output\\finalGraphAverages.txt";
+Stream avgfile = File.Open(avgpath, FileMode.OpenOrCreate);
+StreamWriter avgwriter = new StreamWriter(avgfile);
+for (int allele = 0; allele < 11; allele++)
+{
+    avgwriter.Write("Allele " + allele.ToString() + "averages");
+    double[] sds = new double[increments];
+    for (int increment = 0; increment < increments; increment++)
+    {
+        float avg = 0f;
+        for (int seedNo = 0; seedNo < simulationTotal; seedNo++)
+        {
+            avg += (float)insanelyMuchData[allele][seedNo][increment];
+        }
+        float avgavg = (float)avg / (float)simulationTotal;
+        avgwriter.Write(", " + avgavg.ToString());
+        double sd = 0f;
+        for (int seedNo = 0; seedNo < simulationTotal; seedNo++)
+        {
+            sd += (double)Math.Pow((insanelyMuchData[allele][seedNo][increment] - avgavg), 2);
+        }
+        sd /= (double)simulationTotal;
+        sds[increment] = (double)Math.Sqrt(sd);
+
+    }
+    avgwriter.Write("\n");
+    avgwriter.Write("Allele " + allele.ToString() + "sds");
+    for (int increment = 0; increment < increments; increment++)
+    {
+        avgwriter.Write(", " + sds[increment].ToString());
+    }
+    avgwriter.Write("\n");
+
+}
+avgwriter.Close();
 //now print that shit hsghds uhm
 
 

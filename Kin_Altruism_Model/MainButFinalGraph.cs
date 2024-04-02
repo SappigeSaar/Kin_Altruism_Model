@@ -24,7 +24,7 @@ namespace Kin_Altruism_Model
 
         public MainButFinalGraph(int[] seeds, int[][][] largeAssBullshit)
         {                                     //allele, seed, increment (10, 1000, 1001)
-            this.xlinked = false;
+            this.xlinked = true;
             Stopwatch stopwatch = new();
             stopwatch.Start();
 
@@ -162,7 +162,7 @@ namespace Kin_Altruism_Model
 
             if (xlinked)
             {
-                for (int phaseCounter = 0; phaseCounter < 1001; phaseCounter++)
+                for (int phaseCounter = 0; phaseCounter < phaseCount; phaseCounter++)
                 {
                     //print population for each allele 0 to 10
                     for (int i = 0; i < 11; i++)
@@ -255,7 +255,7 @@ namespace Kin_Altruism_Model
             }
             else
             {
-                for (int phaseCounter = 0; phaseCounter < 1001; phaseCounter++)
+                for (int phaseCounter = 0; phaseCounter < phaseCount; phaseCounter++)
                 {
                     //print state to file youre working on
                     int populationTotal = simplepopulation.Count;

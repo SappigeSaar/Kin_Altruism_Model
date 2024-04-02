@@ -1,4 +1,4 @@
 ﻿5
-numOfBundles 5,mutationChance 3
-first
+numOfBundles 5,mutationChance 3,bonusGain 80
+second
 2,2,2,2,2,2,2,2,2,2,2
