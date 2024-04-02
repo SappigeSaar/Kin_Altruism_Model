@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Kin_Altruism_Model
 {
-    public class MainButFinalGraph
+    public class MainButMutation
     {
         Parameters parameters;
         List<XlinkedCreature> population = new List<XlinkedCreature>();
@@ -22,15 +22,15 @@ namespace Kin_Altruism_Model
         int halfwayPoint;
         bool firstHalf;
 
-        public MainButFinalGraph(int[] seeds, double[][][] largeAssBullshit)
-        {                                     //allele, seed, increment (10, 1000, 1001)
+        public MainButMutation(int[] seeds, int[][][] largeAssBullshit)
+        {                                     //allele, seed, mutationchance (10, 1000, 1001)
             this.xlinked = false;
             Stopwatch stopwatch = new();
             stopwatch.Start();
 
-            //do it fucken like, 1000 times
+            //do it fucken like, 30 times
 
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 30; i++)
             {
                 this.population = new List<XlinkedCreature>();
                 this.simplepopulation = new List<SimpleCreature>();
@@ -42,6 +42,7 @@ namespace Kin_Altruism_Model
                 int seed = seeds[i];
                 random = new Random(seed);
                 Initialise();
+                parameters.mutationChance = i;
                 RunLoop(largeAssBullshit, i);
             }
 
@@ -158,19 +159,10 @@ namespace Kin_Altruism_Model
         /// </summary>
         public void RunLoop(double[][][] tenmilliondatapoints, int seedNo)
         {
-            int phaseCount = 1000;
-
             if (xlinked)
             {
-                for (int phaseCounter = 0; phaseCounter < 1001; phaseCounter++)
+                for (int phaseCounter = 0; phaseCounter < 5000; phaseCounter++)
                 {
-                    int populationTotal = population.Count;
-                    //print population for each allele 0 to 10
-                    for (int i = 0; i < 11; i++)
-                    {
-                        double populationpercent = (double)100 * (double)population.FindAll(x => x.gene1.altruism == i || x.gene2.altruism == i).Count / (double)populationTotal;
-                        tenmilliondatapoints[i][seedNo][phaseCounter] = populationpercent;
-                    }
                     //assign food
                     AssignFood();
 
@@ -253,19 +245,15 @@ namespace Kin_Altruism_Model
 
 
                 }
+                for (int allele = 0; allele < 11; allele++)
+                {
+                    tenmilliondatapoints[allele][seedNo][parameters.mutationChance] = population.FindAll(x => x.gene1.altruism == allele).Count + population.FindAll(x => x.gene2.altruism == allele).Count;
+                }
             }
             else
             {
-                for (int phaseCounter = 0; phaseCounter < 1001; phaseCounter++)
+                for (int phaseCounter = 0; phaseCounter < 5000; phaseCounter++)
                 {
-                    //print state to file youre working on
-                    int populationTotal = simplepopulation.Count;
-                    //print population for each allele 0 to 10
-                    for (int i = 0; i < 11; i++)
-                    {
-                        double populationpercent = (double)100 * (double)simplepopulation.FindAll(x => x.gene1val == i || x.gene2val == i).Count / (double)populationTotal;
-                        tenmilliondatapoints[i][seedNo][phaseCounter] = populationpercent;
-                    }
                     //assign food
                     SimpleAssignFood();
 
@@ -350,6 +338,10 @@ namespace Kin_Altruism_Model
                         creature.RelationsUpdate();
                     }
 
+                }
+                for (int allele = 0; allele < 11; allele++)
+                {
+                    tenmilliondatapoints[allele][seedNo][parameters.mutationChance] = simplepopulation.FindAll(x => x.gene1val == allele).Count + simplepopulation.FindAll(x => x.gene2val == allele).Count;
                 }
             }
         }

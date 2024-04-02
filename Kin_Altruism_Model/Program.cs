@@ -10,41 +10,43 @@ using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
 using System.Diagnostics;
 
-double[][][] insanelyMuchData = new double[11][][];
-int[] seeds = new int[1000];
+int simAmount = 1000;
+
+int[][][] insanelyMuchData = new int[11][][];
+int[] seeds = new int[simAmount];
 Random seedgenerator = new Random();
-for (int i = 0; i < 1000; i++)
+for (int i = 0; i < simAmount; i++)
 {
     seeds[i] = seedgenerator.Next();
 }
 
 for (int allele = 0; allele < 11; allele++)
 {
-    insanelyMuchData[allele] = new double[1000][];
+    insanelyMuchData[allele] = new int[simAmount][];
     for(int seedNo = 0;seedNo < 1000; seedNo++)
     {
-        insanelyMuchData[allele][seedNo] = new double[1001];
+        insanelyMuchData[allele][seedNo] = new int[30];
     }
 }
 Console.WriteLine("Starting Calcs");
-MainButFinalGraph main = new(seeds, insanelyMuchData);
+MainButMutation main = new(seeds, insanelyMuchData);
 Console.WriteLine("Done Saving Calcs");
 Console.WriteLine("Writing Save Data to File");
 
 for (int allele = 0; allele < 11; allele++)
 {
-    string path = "..\\..\\..\\output\\finalGraphAllele" + allele.ToString() + ".txt";
+    string path = "..\\..\\..\\output\\mutationFinalamountAllele " + allele.ToString() + ".txt";
     Stream file = File.Open(path, FileMode.OpenOrCreate);
     StreamWriter writer = new StreamWriter(file);
 
     writer.WriteLine("Results for allele " + allele.ToString() + ":");
 
-    for (int seedNo = 0;seedNo < 1000; seedNo++)
+    for (int seedNo = 0; seedNo < simAmount; seedNo++)
     {
         writer.Write("Seed " + seeds[seedNo]);
-        for(int increment = 0; increment < 1001; increment++)
+        for(int mutationChancee = 0; mutationChancee < 30; mutationChancee++)
         {
-            writer.Write(", " + insanelyMuchData[allele][seedNo][increment].ToString());
+            writer.Write(", " + insanelyMuchData[allele][seedNo][mutationChancee].ToString());
         }
         writer.Write("\n");
     }
