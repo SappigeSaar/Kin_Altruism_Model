@@ -9,48 +9,44 @@ using System;
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
 using System.Diagnostics;
+using Kin_Alturism_Model;
 
-double[][][] insanelyMuchData = new double[11][][];
-int[] seeds = new int[1000];
-Random seedgenerator = new Random();
-for (int i = 0; i < 1000; i++)
-{
-    seeds[i] = seedgenerator.Next();
+
+int nrofRuns = 1000;
+int nrOfiterations = 5000;
+int[][] insanelyMuchData = new int[nrofRuns][];
+for(int run = 0; run < nrofRuns; run++){
+    insanelyMuchData[run] = new int[nrOfiterations];
 }
 
-for (int allele = 0; allele < 11; allele++)
+int[] seeds = new int[nrofRuns];
+for (int i = 0; i < nrofRuns; i++)
 {
-    insanelyMuchData[allele] = new double[1000][];
-    for(int seedNo = 0;seedNo < 1000; seedNo++)
-    {
-        insanelyMuchData[allele][seedNo] = new double[1001];
-    }
+    seeds[i] = i * 9 + 42069;
 }
+
+
 Console.WriteLine("Starting Calcs");
-MainButFinalGraph main = new(seeds, insanelyMuchData);
+MainSexRatio main = new(seeds, insanelyMuchData, nrofRuns, nrOfiterations);
 Console.WriteLine("Done Saving Calcs");
 Console.WriteLine("Writing Save Data to File");
+string path = "..\\..\\..\\output\\femalePopulation(1000runs)2" + ".txt";
+Stream file = File.Open(path, FileMode.OpenOrCreate);
+StreamWriter writer1 = new StreamWriter(file);
 
-for (int allele = 0; allele < 11; allele++)
+//how to write it6 down into the file
+for (int run = 0; run < nrofRuns; run ++)
 {
-    string path = "..\\..\\..\\output\\finalGraphAllele" + allele.ToString() + ".txt";
-    Stream file = File.Open(path, FileMode.OpenOrCreate);
-    StreamWriter writer = new StreamWriter(file);
-
-    writer.WriteLine("Results for allele " + allele.ToString() + ":");
-
-    for (int seedNo = 0;seedNo < 1000; seedNo++)
+    writer1.Write(seeds[run].ToString());
+    foreach (int datapoint in insanelyMuchData[run])
     {
-        writer.Write("Seed " + seeds[seedNo]);
-        for(int increment = 0; increment < 1001; increment++)
-        {
-            writer.Write(", " + insanelyMuchData[allele][seedNo][increment].ToString());
-        }
-        writer.Write("\n");
+        //writer.Write("females: ");
+        writer1.Write(", " + insanelyMuchData[run][datapoint].ToString());
+
     }
-    writer.Close();
-    Console.WriteLine("Finished Writing Allele " + allele.ToString());
+    writer1.Write("\n");
 }
+
 //now print that shit hsghds uhm
 
 
