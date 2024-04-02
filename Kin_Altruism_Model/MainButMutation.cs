@@ -30,7 +30,7 @@ namespace Kin_Altruism_Model
 
             //do it fucken like, 30 times
 
-            for (int i = 0; i < 30; i++)
+            for (int i = 0; i < 1000; i++) //may change
             {
                 this.population = new List<XlinkedCreature>();
                 this.simplepopulation = new List<SimpleCreature>();
@@ -157,7 +157,7 @@ namespace Kin_Altruism_Model
         /// <summary>
         /// runs the program itself
         /// </summary>
-        public void RunLoop(double[][][] tenmilliondatapoints, int seedNo)
+        public void RunLoop(int[][][] tenmilliondatapoints, int seedNo)
         {
             if (xlinked)
             {
