@@ -1,0 +1,25 @@
+data recorded: population per phase per gender per altruism level
+parameters: X-linked, starting population of 12 (evenly split man and women) all of the same allele, mutation chnace of 0, 5 bundles of food per phase, 5000 phases per run, 1000 runs per allele, 11 allele's [0-10].
+time per run:
+Alt0Female: 75416 ms
+Alt1Female: 187722 ms
+Alt2Female: 347019 ms
+Alt3Female: 347713 ms
+Alt4Female: 348758 ms
+Alt5Female: 347145 ms
+Alt6Female: 348185 ms
+Alt7Female: 343667 ms (was run twice, first version was lost)
+Alt8Female: 349984 ms
+Alt9Female: 433706 ms
+Alt10Female: 378606 ms
+Alt0Male: 79409 ms
+Alt1Male: 194234 ms
+Alt2Male: 359981 ms
+Alt3Male: 359741 ms
+Alt4Male: 360311 ms
+Alt5Male: 359802 ms
+Alt6Male: 359490 ms
+Alt7Male: 361678 ms
+Alt8Male: 348035 ms
+Alt9Male: 340580 ms
+Alt10male: 339907 ms
