@@ -12,7 +12,7 @@ using System.Diagnostics;
 using Kin_Alturism_Model;
 
 
-int nrofRuns = 1000;
+int nrofRuns = 1001;
 int nrOfiterations = 5000;
 int[][] insanelyMuchData = new int[nrofRuns][];
 for(int run = 0; run < nrofRuns; run++){
@@ -26,25 +26,28 @@ for (int i = 0; i < nrofRuns; i++)
 }
 
 
-Console.WriteLine("Starting Calcs");
-MainSexRatio main = new(seeds, insanelyMuchData, nrofRuns, nrOfiterations);
-Console.WriteLine("Done Saving Calcs");
-Console.WriteLine("Writing Save Data to File");
-string path = "..\\..\\..\\output\\femalePopulation(1000runs)2" + ".txt";
-Stream file = File.Open(path, FileMode.OpenOrCreate);
-StreamWriter writer1 = new StreamWriter(file);
-
-//how to write it6 down into the file
-for (int run = 0; run < nrofRuns; run ++)
+for (int i = 0; i < 11; i++)
 {
-    writer1.Write(seeds[run].ToString());
-    foreach (int datapoint in insanelyMuchData[run])
-    {
-        //writer.Write("females: ");
-        writer1.Write(", " + insanelyMuchData[run][datapoint].ToString());
+    Console.WriteLine("Starting Calcs");
+    MainSexRatio main = new(seeds, insanelyMuchData, nrofRuns, nrOfiterations, i);
+    Console.WriteLine("Done Saving Calcs");
+    Console.WriteLine("Writing Save Data to File");
+    string path = "..\\..\\..\\output\\malePopulationAltruism" + i + "(1001runs)1" + ".txt";
+    Stream file = File.Open(path, FileMode.OpenOrCreate);
+    StreamWriter writer1 = new StreamWriter(file);
 
+    //how to write it6 down into the file
+    for (int run = 0; run < nrofRuns; run++)
+    {
+        writer1.Write(seeds[run].ToString());
+        foreach (int datapoint in insanelyMuchData[run])
+        {
+            //writer.Write("females: ");
+            writer1.Write(", " + insanelyMuchData[run][datapoint].ToString());
+
+        }
+        writer1.Write("\n");
     }
-    writer1.Write("\n");
 }
 
 //now print that shit hsghds uhm

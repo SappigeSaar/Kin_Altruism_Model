@@ -25,16 +25,18 @@ namespace Kin_Alturism_Model
 
         int nrOfiterations;
 
-        public MainSexRatio(int[] seeds, int[][] data, int nrOfRuns, int nrOfiterations)
+        int altruism;
+
+        public MainSexRatio(int[] seeds, int[][] data, int nrOfRuns, int nrOfiterations, int altruism)
         {
-            xlinked = false;
+            xlinked = true;
 
             this.nrOfiterations = nrOfiterations;
 
             Stopwatch stopwatch = new();
             stopwatch.Start();
 
-
+            this.altruism = altruism;
 
             //do it fucken like, 1000 times
 
@@ -69,7 +71,7 @@ namespace Kin_Alturism_Model
             //set up all the creatures
 
             //read the initiattion Parameters from a file
-            StreamReader reader = new StreamReader("..\\..\\..\\initParameters.txt");
+            StreamReader reader = new StreamReader("..\\..\\..\\initParameters1.txt");
 
             string line = reader.ReadLine();
             if (line == "none")
@@ -105,19 +107,18 @@ namespace Kin_Alturism_Model
 
 
 
-            line = reader.ReadLine();
-            string[] distribution = line.Split(',');
+            //line = reader.ReadLine();
+            //string[] distribution = line.Split(',');
             if (xlinked)
             {
-                for (int altruism = 0; altruism < distribution.Length; altruism++)
-                {
+                
                     dominance dominance;
                     if (altruism < halfwayPoint)
                         dominance = firstHalf;
                     else
                         dominance = secondHalf;
 
-                    int total = int.Parse(distribution[altruism]);
+                    int total = 12;
 
                     //make the fems
                     for (int j = 0; j < (total / 2); j++)
@@ -134,13 +135,12 @@ namespace Kin_Alturism_Model
                         population.Add(creature);
                         males.Add(creature);
                     }
-                }
+                
             }
             else
             {
-                for (int altruism = 0; altruism < distribution.Length; altruism++)
-                {
-                    int total = int.Parse(distribution[altruism]);
+                
+                    int total = 12;
                     dominance dom;
                     if (altruism < halfwayPoint) dom = firstHalf; else dom = secondHalf;
 
@@ -159,7 +159,7 @@ namespace Kin_Alturism_Model
                         simplepopulation.Add(creature);
                         simplemales.Add(creature);
                     }
-                }
+                
             }
             reader.Close();
 
