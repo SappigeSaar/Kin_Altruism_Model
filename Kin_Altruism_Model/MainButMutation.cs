@@ -22,29 +22,34 @@ namespace Kin_Altruism_Model
         int halfwayPoint;
         bool firstHalf;
 
-        public MainButMutation(int[] seeds, int[][][] largeAssBullshit)
+        public MainButMutation(int[][] seeds, int[][][] largeAssBullshit, int mutationsTested, int simAmount)
         {                                     //allele, seed, mutationchance (10, 1000, 1001)
             this.xlinked = false;
             Stopwatch stopwatch = new();
             stopwatch.Start();
 
-            //do it fucken like, 30 times
-
-            for (int i = 0; i < 1000; i++) //may change
+            //do it fucken like, 1000 times
+            for (int m = 0; m <= mutationsTested; m++)
             {
-                this.population = new List<XlinkedCreature>();
-                this.simplepopulation = new List<SimpleCreature>();
-                this.males = new List<XlinkedCreature>();
-                this.simplemales = new List<SimpleCreature>();
-                this.females = new List<XlinkedCreature>();
-                this.simplefemales = new List<SimpleCreature>();
+                int setMutate = m;
+                int[] seedlist = seeds[m];
+                for (int i = 0; i < simAmount; i++) //may change
+                {
+                    this.population = new List<XlinkedCreature>();
+                    this.simplepopulation = new List<SimpleCreature>();
+                    this.males = new List<XlinkedCreature>();
+                    this.simplemales = new List<SimpleCreature>();
+                    this.females = new List<XlinkedCreature>();
+                    this.simplefemales = new List<SimpleCreature>();
 
-                int seed = seeds[i];
-                random = new Random(seed);
-                Initialise();
-                parameters.mutationChance = i;
-                RunLoop(largeAssBullshit, i);
+                    int seed = seedlist[i];
+                    random = new Random(seed);
+                    Initialise();
+                    parameters.mutationChance = setMutate;
+                    RunLoop(largeAssBullshit, i);
+                }
             }
+            
 
             stopwatch.Stop();
             Console.WriteLine("done :3");

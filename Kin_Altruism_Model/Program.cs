@@ -11,25 +11,32 @@ using System.Runtime.CompilerServices;
 using System.Diagnostics;
 
 int simAmount = 1000;
+int mutationsTested = 30;
+
 
 int[][][] insanelyMuchData = new int[11][][];
-int[] seeds = new int[simAmount];
+
+int[][] seeds = new int[mutationsTested + 1][];
 Random seedgenerator = new Random();
-for (int i = 0; i < simAmount; i++)
+for (int i = 0; i <= mutationsTested; i++)
 {
-    seeds[i] = seedgenerator.Next();
+    seeds[i] = new int[simAmount];
+    for (int j = 0; j < simAmount; j++)
+    {
+        seeds[i][j] = seedgenerator.Next();
+    }
 }
 
 for (int allele = 0; allele < 11; allele++)
 {
     insanelyMuchData[allele] = new int[simAmount][];
-    for(int seedNo = 0;seedNo < 1000; seedNo++)
+    for(int seedNo = 0;seedNo < simAmount; seedNo++)
     {
-        insanelyMuchData[allele][seedNo] = new int[30];
+        insanelyMuchData[allele][seedNo] = new int[mutationsTested + 1];
     }
 }
 Console.WriteLine("Starting Calcs");
-MainButMutation main = new(seeds, insanelyMuchData);
+MainButMutation main = new(seeds, insanelyMuchData, mutationsTested, simAmount);
 Console.WriteLine("Done Saving Calcs");
 Console.WriteLine("Writing Save Data to File");
 
@@ -39,17 +46,27 @@ for (int allele = 0; allele < 11; allele++)
     Stream file = File.Open(path, FileMode.OpenOrCreate);
     StreamWriter writer = new StreamWriter(file);
 
-    writer.WriteLine("Results for allele " + allele.ToString() + ":");
+    writer.WriteLine("Seeds for allele " + allele.ToString() + ":" + "\n");
 
     for (int seedNo = 0; seedNo < simAmount; seedNo++)
     {
-        writer.Write("Seed " + seeds[seedNo]);
-        for(int mutationChancee = 0; mutationChancee < 30; mutationChancee++)
+        for(int mutationCHancee = 0; mutationCHancee <= mutationsTested; mutationCHancee++)
         {
-            writer.Write(", " + insanelyMuchData[allele][seedNo][mutationChancee].ToString());
+            writer.Write(seeds[mutationCHancee][seedNo] + ",");
+        }
+        writer.Write('\n');
+
+    }
+    writer.WriteLine("Final population for allele " + allele.ToString() + ":" + "\n");
+    for (int seedNo = 0; seedNo < simAmount; seedNo++)
+    {
+        for (int mutationChancee = 0; mutationChancee <= mutationsTested; mutationChancee++)
+        {
+            writer.Write(insanelyMuchData[allele][seedNo][mutationChancee].ToString() + ", ");
         }
         writer.Write("\n");
     }
+    
     writer.Close();
     Console.WriteLine("Finished Writing Allele " + allele.ToString());
 }
