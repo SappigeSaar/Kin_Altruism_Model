@@ -27,9 +27,9 @@ namespace Kin_Alturism_Model
 
         int altruism;
 
-        public MainSexRatio(int[] seeds, int[][] data, int nrOfRuns, int nrOfiterations, int altruism)
+        public MainSexRatio(int[] seeds, int[] data, int nrOfRuns, int nrOfiterations, int altruism)
         {
-            xlinked = true;
+            xlinked = false;
 
             this.nrOfiterations = nrOfiterations;
 
@@ -197,14 +197,14 @@ namespace Kin_Alturism_Model
         /// <summary>
         /// runs the program itself
         /// </summary>
-        public void RunLoop(int[][] data, int run)
+        public void RunLoop(int[] data, int run)
         {
 
             if (xlinked)
             {
                 for (int phasecount = 0; phasecount < nrOfiterations; phasecount++)
                 {
-                    data[run][phasecount] = females.Count;
+                    
                     //assign food
                     AssignFood();
 
@@ -288,12 +288,13 @@ namespace Kin_Alturism_Model
 
                     //print state to file youre working on
                 }
+                data[run] = females.Count;
             }
             else
             {
                 for (int phasecount = 0; phasecount < nrOfiterations; phasecount++)
                 {
-                    data[run][phasecount] = simplefemales.Count;
+                    
                     //assign food
                     SimpleAssignFood();
 
@@ -379,6 +380,8 @@ namespace Kin_Alturism_Model
                     }
                     //print state to file youre working on
                 }
+
+                data[run] = simplefemales.Count;
             }
         }
 

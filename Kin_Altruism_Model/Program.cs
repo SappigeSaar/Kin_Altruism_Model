@@ -14,10 +14,7 @@ using Kin_Alturism_Model;
 
 int nrofRuns = 1001;
 int nrOfiterations = 5000;
-int[][] insanelyMuchData = new int[nrofRuns][];
-for(int run = 0; run < nrofRuns; run++){
-    insanelyMuchData[run] = new int[nrOfiterations];
-}
+int[] insanelyMuchData = new int[nrofRuns];
 
 int[] seeds = new int[nrofRuns];
 for (int i = 0; i < nrofRuns; i++)
@@ -32,7 +29,7 @@ for (int i = 0; i < 11; i++)
     MainSexRatio main = new(seeds, insanelyMuchData, nrofRuns, nrOfiterations, i);
     Console.WriteLine("Done Saving Calcs");
     Console.WriteLine("Writing Save Data to File");
-    string path = "..\\..\\..\\output\\malePopulationAltruism" + i + "(1001runs)1" + ".txt";
+    string path = "..\\..\\..\\output\\femalePopAltruismAutosomal" + i + "(1001runs)1" + ".txt";
     Stream file = File.Open(path, FileMode.OpenOrCreate);
     StreamWriter writer1 = new StreamWriter(file);
 
@@ -40,12 +37,9 @@ for (int i = 0; i < 11; i++)
     for (int run = 0; run < nrofRuns; run++)
     {
         writer1.Write(seeds[run].ToString());
-        foreach (int datapoint in insanelyMuchData[run])
-        {
-            //writer.Write("females: ");
-            writer1.Write(", " + insanelyMuchData[run][datapoint].ToString());
+         writer1.Write(", " + insanelyMuchData[run].ToString());
 
-        }
+        
         writer1.Write("\n");
     }
 }
