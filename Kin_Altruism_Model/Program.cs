@@ -10,11 +10,12 @@ using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
 using System.Diagnostics;
 
-int[][][] insanelyMuchData = new int[11][][];
-int[] seeds = new int[1000];
-Random seedgenerator = new Random();
-int increments = 5000;
+int increments = 1000;
 int simulationTotal = 1000;
+int[][][] insanelyMuchData = new int[11][][];
+int[] seeds = new int[simulationTotal];
+Random seedgenerator = new Random();
+
 for (int i = 0; i < simulationTotal; i++)
 {
     seeds[i] = seedgenerator.Next();
@@ -29,7 +30,7 @@ for (int allele = 0; allele < 11; allele++)
     }
 }
 Console.WriteLine("Starting Calcs");
-MainButFinalGraph main = new(seeds, insanelyMuchData);
+MainButFinalGraph main = new(seeds, insanelyMuchData, increments, simulationTotal);
 Console.WriteLine("Done Saving Calcs");
 Console.WriteLine("Writing Save Data to File");
 
@@ -80,7 +81,7 @@ for (int allele = 0; allele < 11; allele++)
 
     }
     avgwriter.Write("\n");
-    avgwriter.Write("Allele " + allele.ToString() + "sds");
+    avgwriter.Write("Allele " + allele.ToString() + "standard deviations");
     for (int increment = 0; increment < increments; increment++)
     {
         avgwriter.Write(", " + sds[increment].ToString());
@@ -88,6 +89,7 @@ for (int allele = 0; allele < 11; allele++)
     avgwriter.Write("\n");
 
 }
+Console.WriteLine("Finished Writing Averages!!!!");
 avgwriter.Close();
 //now print that shit hsghds uhm
 

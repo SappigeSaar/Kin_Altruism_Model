@@ -22,15 +22,15 @@ namespace Kin_Altruism_Model
         int halfwayPoint;
         bool firstHalf;
 
-        public MainButFinalGraph(int[] seeds, int[][][] largeAssBullshit)
+        public MainButFinalGraph(int[] seeds, int[][][] largeAssBullshit, int increments, int noOfSimulations)
         {                                     //allele, seed, increment (10, 1000, 1001)
-            this.xlinked = true;
+            this.xlinked = false;
             Stopwatch stopwatch = new();
             stopwatch.Start();
 
             //do it fucken like, 1000 times
 
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < noOfSimulations; i++)
             {
                 this.population = new List<XlinkedCreature>();
                 this.simplepopulation = new List<SimpleCreature>();
@@ -42,7 +42,7 @@ namespace Kin_Altruism_Model
                 int seed = seeds[i];
                 random = new Random(seed);
                 Initialise();
-                RunLoop(largeAssBullshit, i);
+                RunLoop(largeAssBullshit, i, increments);
             }
 
             stopwatch.Stop();
@@ -156,9 +156,9 @@ namespace Kin_Altruism_Model
         /// <summary>
         /// runs the program itself
         /// </summary>
-        public void RunLoop(int[][][] tenmilliondatapoints, int seedNo)
+        public void RunLoop(int[][][] tenmilliondatapoints, int seedNo, int increments)
         {
-            int phaseCount = 5000;
+            int phaseCount = increments;
 
             if (xlinked)
             {
